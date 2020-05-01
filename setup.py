@@ -14,6 +14,7 @@ setup(name='three2fifteen-api',
       packages=['app'],
       long_description=open('README.rst').read(),
       install_requires=[
+          'psycopg2',
           'flask',
           'pyjwt',
           'flask-cors',
