@@ -1,6 +1,3 @@
-import requests
-import json
-import logging
 from app.model.model import DuplicateFieldError, InvalidDataError, Model
 
 
@@ -10,7 +7,7 @@ class PlayerService(object):
     EMPTY_NAME = 3
     NAME_TOO_LONG = 4
 
-    def __init__(self, config, model):
+    def __init__(self, model):
         self.model = model
 
     def create(self, user_id, name):

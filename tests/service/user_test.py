@@ -8,24 +8,14 @@ from app.service.user import UserService
 from werkzeug.security import generate_password_hash
 
 
-def callback_ok(user_id):
-    return (True, {'message': 'ok'})
-
-
-def callback_ko(user_id):
-    return (False, {'message': 'ko'})
-
-
 @patch.object(PlayerModel, 'insert')
-@patch.object(Model, 'commit')
-def test_create_player_ok(mock_commit, mock_playerInsert):
+def test_create_player_ok(mock_playerInsert):
     config = {'APP_NAME': 'foo'}
     mock_playerInsert.return_value = 1
     service = UserService(PlayerModel, config)
-    res = service.create('username', 'password', {}, callback_ok)
+    res = service.create('username', 'password')
     assert mock_playerInsert.called
     assert res == (True, 1)
-    assert mock_commit.called
 
 
 @patch.object(PlayerModel, 'insert')
@@ -33,7 +23,7 @@ def test_create_player_username_too_short(mock_playerInsert):
     config = {'APP_NAME': 'foo'}
     mock_playerInsert.return_value = 1
     service = UserService(PlayerModel, config)
-    res = service.create('', 'password', {}, callback_ok)
+    res = service.create('', 'password')
     assert not mock_playerInsert.called
     assert res == (False, UserService.USERNAME_TOO_SHORT)
 
@@ -43,7 +33,7 @@ def test_create_player_trim_username(mock_playerInsert):
     config = {'APP_NAME': 'foo'}
     mock_playerInsert.return_value = 1
     service = UserService(PlayerModel, config)
-    res = service.create('  ', 'password', {}, callback_ok)
+    res = service.create('  ', 'password')
     assert not mock_playerInsert.called
     assert res == (False, UserService.USERNAME_TOO_SHORT)
 
@@ -53,21 +43,21 @@ def test_create_player_trim_password(mock_playerInsert):
     config = {'APP_NAME': 'foo'}
     mock_playerInsert.return_value = 1
     service = UserService(PlayerModel, config)
-    res = service.create('username', '1234      ', {}, callback_ok)
+    res = service.create('username', '1234      ')
     assert not mock_playerInsert.called
     assert res == (False, UserService.PASSWORD_TOO_SHORT)
 
 
-def test_create_login_too_long():
+@patch.object(PlayerModel, 'insert')
+def test_create_login_too_long(mock_playerInsert):
     config = {'APP_NAME': 'foo'}
     service = UserService(PlayerModel, config)
     res = service.create(
         'usernameveryveryveryveryveryveryveryverylong',
-        'password',
-        {},
-        callback_ok
+        'password'
     )
     assert res == (False, UserService.USERNAME_TOO_LONG)
+    assert not mock_playerInsert.called
 
 
 def test_create_password_too_short():
@@ -75,35 +65,19 @@ def test_create_password_too_short():
     service = UserService(PlayerModel, config)
     res = service.create(
         'username',
-        'passwor',
-        {},
-        callback_ok
+        'passwor'
     )
     assert res == (False, UserService.PASSWORD_TOO_SHORT)
 
 
 @patch.object(PlayerModel, 'insert')
-@patch.object(Model, 'rollback')
-def test_create_player_duplicate(mock_rollback, mock_playerInsert):
+def test_create_player_duplicate(mock_playerInsert):
     config = {'APP_NAME': 'foo'}
     mock_playerInsert.side_effect = DuplicateFieldError()
     service = UserService(PlayerModel, config)
-    res = service.create('username', 'password', {}, callback_ok)
+    res = service.create('username', 'password')
     assert mock_playerInsert.called
     assert res == (False, UserService.USERNAME_ALREADY_USED)
-    assert mock_rollback.called
-
-
-@patch.object(PlayerModel, 'insert')
-@patch.object(Model, 'rollback')
-def test_create_player_fails_callback(mock_rollback, mock_playerInsert):
-    config = {'APP_NAME': 'api'}
-    mock_playerInsert.return_value = 1
-    service = UserService(PlayerModel, config)
-    res = service.create('username', 'password', {}, callback_ko)
-    assert mock_playerInsert.called
-    assert res == (False, UserService.ERROR_PLAYER_CREATION, {'message': 'ko'})
-    assert mock_rollback.called
 
 
 @pytest.mark.parametrize(
