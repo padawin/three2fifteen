@@ -64,8 +64,12 @@ def register_blueprints(app):
     """
     for name in find_modules('app.blueprints'):
         mod = import_string(name)
-        if hasattr(mod, 'bp'):
-            app.register_blueprint(mod.bp)
+        try:
+            blueprint = mod.bp
+        except AttributeError:
+            pass
+        else:
+            app.register_blueprint(blueprint)
     return None
 
 
