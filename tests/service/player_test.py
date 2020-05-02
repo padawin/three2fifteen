@@ -141,3 +141,19 @@ def test_create_player_name_too_long():
          'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     )
     assert res == (False, player.PlayerService.NAME_TOO_LONG)
+
+
+@patch.object(PlayerModel, 'loadBy')
+def test_get_player_from_user_id_no_player_found(mock_playerLoadBy):
+    mock_playerLoadBy.return_value = []
+    service = player.PlayerService(PlayerModel)
+    p = service.get_from_playerid(1)
+    assert not p
+
+
+@patch.object(PlayerModel, 'loadBy')
+def test_get_player_from_user_id(mock_playerLoadBy):
+    mock_playerLoadBy.return_value = [{"foo": "bar"}]
+    service = player.PlayerService(PlayerModel)
+    p = service.get_from_playerid(1)
+    assert p == {"foo": "bar"}

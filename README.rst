@@ -16,3 +16,15 @@ environment.
 Start then with:
 
 	env THREE2FIFTEEN_API_SETTINGS=/path/to/config.cfg three2fifteen-api
+
+## Database
+
+A Postgres database is needed. For development purposes, docker can be used:
+
+	$ docker run --name three2fifteen-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+
+## Tests
+
+Install ``requirements_dev.txt``, then run:
+
+    $ pytest
