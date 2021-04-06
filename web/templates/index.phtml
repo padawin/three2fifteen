@@ -1,0 +1,39 @@
+{% extends "layout.phtml" %}
+{% block body %}
+	{% include "header.phtml" %}
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col-lg-6">
+				<h3>Create Game</h3>
+				<div class="card">
+					<div class="card-body">
+						<form id="game-creation-form" method="POST" action="">
+							<div id="form-message"></div>
+							<div class="form-group">
+								<label for="player_name">Your nickname</label>
+								<input name="player_name" id="player_name" placeholder="Nickname" />
+							</div>
+							<div class="form-group">
+								<label for="nbPlayers">Number of players</label>
+								<div class="input-group mb-3">
+								<select class="custom-select" name="nbPlayers" id="nbPlayers" placeholder="Number of players">
+									<option value="2">Two</option>
+									<option value="3">Three</option>
+										<option value="4">Four</option>
+								</select>
+								</div>
+							</div>
+
+							<input type="submit" class="btn btn-primary btn-full-width" value="Create" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript" src="{{ url_for('static', filename='scripts/game.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='scripts/modules/home.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='scripts/modules/header.js') }}"></script>
+{% endblock %}

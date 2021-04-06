@@ -1,12 +1,12 @@
 import sys
-from app.model.model import Model
-from app.model.game import GameModel
-from app.model.game_player import GamePlayerModel
-from app.model.turn import TurnModel
-from app.model.player import PlayerModel
-from app.service.player import PlayerService
-from app.service.game import GameService
-from app.service.turn import TurnService
+from api.model.model import Model
+from api.model.game import GameModel
+from api.model.game_player import GamePlayerModel
+from api.model.turn import TurnModel
+from api.model.player import PlayerModel
+from api.service.player import PlayerService
+from api.service.game import GameService
+from api.service.turn import TurnService
 
 Model.connect("dbname=three2fifteen_game user=postgres host=172.17.0.2 password=mysecretpassword")
 # add players
@@ -35,16 +35,16 @@ playerId4 = playerId4[1]
 gs = GameService(GameModel, GamePlayerModel)
 # create first game
 game1Id = gs.create(playerId1, 3)
-res = gs.addPlayer(game1Id, playerId2)
+res = gs.add_player(game1Id, playerId2)
 print("Result add player 2: {}".format(res))
 print("game {} created from {}, guest: {}".format(game1Id, playerId1, playerId2))
-res = gs.addPlayer(game1Id, playerId3)
+res = gs.add_player(game1Id, playerId3)
 
 # create second game
 game2Id = gs.create(playerId3, 2)
-res = gs.addPlayer(game2Id, playerId1)
+res = gs.add_player(game2Id, playerId1)
 print("Result add player 1: {}".format(res))
-res = gs.addPlayer(game2Id, playerId4)
+res = gs.add_player(game2Id, playerId4)
 print("Result add player 4: {}".format(res))
 print("game {} created from {}, guest: {}, ".format(game2Id, playerId3, playerId1, playerId4))
 gamesOf1 = GamePlayerModel.loadGamesFromPlayerId(playerId1)

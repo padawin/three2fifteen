@@ -1,9 +1,18 @@
 import logging
-from flask import Flask, current_app, abort
-from flask_cors import CORS
-from werkzeug.utils import find_modules, import_string
-from app.model import model
+from flask import Flask
 import http.client as http_client
+from tornado.wsgi import WSGIContainer
+from tornado.web import Application, FallbackHandler
+from tornado.ioloop import IOLoop
+
+from websocket import websocket
+from api.routes import bp as api_routes
+from web.routes import bp as web_routes
+
+
+def register_blueprints(app):
+    app.register_blueprint(web_routes)
+    app.register_blueprint(api_routes)
 
 
 def register_logger():
@@ -15,67 +24,28 @@ def register_logger():
     requests_log.propagate = True
 
 
-def register_cors(app):
-    CORS(app, origins=app.config['WEB_HOST'])
-
-
-def register_setup(app):
-    @app.before_request
-    def get_db():
-        logging.info("Creating DB connection")
-        try:
-            model.Model.connect("dbname={} user={} host={} password={}".format(
-                current_app.config['DATABASE_NAME'],
-                current_app.config['DATABASE_USER'],
-                current_app.config['DATABASE_HOST'],
-                current_app.config['DATABASE_PASSWORD']
-            ))
-        except model.ConnectionError:
-            logging.error("Failed connecting to database {} at {}".format(
-                current_app.config['DATABASE_NAME'],
-                current_app.config['DATABASE_HOST']
-            ))
-            abort(500)
-
-
-def register_blueprints(app):
-    """Register all blueprint modules
-
-    Reference: Armin Ronacher, "Flask for Fun and for Profit" PyBay 2016.
-    """
-    for name in find_modules('app.blueprints'):
-        mod = import_string(name)
-        try:
-            blueprint = mod.bp
-        except AttributeError:
-            pass
-        else:
-            app.register_blueprint(blueprint)
-    return None
-
-
-def register_teardowns(app):
-    @app.teardown_appcontext
-    def close_db(error):
-        logging.info("Disconnecting DB connection")
-        model.Model.disconnect()
-
-
-app = Flask('three2fifteen-api')
+app = Flask('three2fifteen')
 
 app.config.update({})
-app.config.from_envvar('THREE2FIFTEEN_API_SETTINGS', silent=False)
+app.config.from_envvar('THREE2FIFTEEN_SETTINGS', silent=True)
 
 logger = logging.getLogger("{} logger".format(app.name))
 logger.setLevel(logging.DEBUG)
 logging.info("starting server")
 
-register_logger()
-register_cors(app)
-register_setup(app)
 register_blueprints(app)
-register_teardowns(app)
+register_logger()
 
+container = WSGIContainer(app)
+server = Application(
+    [
+        (r'/websocket/', websocket.WebSocket),
+        (r'.*', FallbackHandler, dict(fallback=container))
+    ],
+    autoreload=True
+)
+application = server  # our hosting requires application in passenger_wsgi
 
 if __name__ == "__main__":
-    app.run()
+    server.listen(5000)
+    IOLoop.instance().start()

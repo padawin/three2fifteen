@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,WAAW;EACT,OAAO,EAAE,GAAG;EACZ,UAAU,EAAE,IAAI;;AAIlB,gBAAgB;EACd,OAAO,EAAE,SAAS",
+"sources": ["../../sass/gamelist.scss"],
+"names": [],
+"file": "gamelist.css"
+}

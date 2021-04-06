@@ -1,0 +1,46 @@
+.rules{
+  li{
+    margin: 4px 0;
+  }
+  .token{
+    position: relative;
+    cursor: auto;
+    display: inline-block;
+  }
+  .cell{
+    display: inline-block;
+    position: relative;
+    float: none;
+
+    &.cell-double{
+      background-color: $light-red;
+      margin-bottom: -4px;
+    }
+    &.cell-double::after{
+      content:'x2';
+    }
+    &.cell-triple{
+      background-color: $light-blue;;
+      margin-bottom: -4px;
+    }
+    &.cell-triple::after{
+      content:'x3';
+    }
+    &.cell-start{
+      background-color: $light-red;
+      margin-bottom: -4px;
+    }
+    &.cell-start::after{
+      font-family: 'Material Icons';
+      content:'\e838';
+    }
+    &.cell-repeat{
+      background-color: $light-purple;
+      margin-bottom: -4px;
+    }
+    &.cell-repeat::after{
+      font-family: 'Material Icons';
+      content: '\e042';
+    }
+  }
+}

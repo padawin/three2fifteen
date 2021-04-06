@@ -1,0 +1,30 @@
+// Color Palette
+
+$primary-color: #EF5350;
+$secondary-color: #009688;
+$yellow: #FFB300;
+$blue: #3B7BD6;
+$purple: #AB47BC;
+$light-red: #FFBAB1;
+$light-teal: #91E5DF;
+$light-yellow: #FFE49E;
+$light-blue: #A5DCFD;
+$light-purple: #F0CBF6;
+$white: #FFFFFF;
+$gray: #5C5C5D;
+$light-gray: #F4F3F5;
+
+$background-color: #fafafa;
+
+
+// Font Style
+
+$fontFamily: 'PT Sans', Arial, sans-serif;
+
+$body: 1rem/1.429rem $fontFamily;
+$body2: 1rem/1.429rem 500 $fontFamily;
+$caption: 0.8571rem/1.143rem $fontFamily;
+$subhead: 1.143rem/1.429rem $fontFamily;
+$header: 1.429rem/2rem $fontFamily;
+$headline: 1.714rem/2.286rem $fontFamily;
+$display1: 2.286rem/4rem $fontFamily;

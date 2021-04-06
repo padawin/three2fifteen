@@ -1,0 +1,35 @@
+#game-finished-section{
+  text-align: center;
+  .image{
+    width: 300px;
+    height: 300px;
+    margin: 24px auto;
+    &.winner{
+      background-image: url('../images/cup.png');
+      background-size: contain;
+      width: 160px;
+      height: 160px;
+    }
+  }
+  .btn{
+    margin-bottom: 32px;
+  }
+  #player-scores{
+    border-left: none;
+    .score{
+      padding: 8px 16px;
+      border-left: none;
+    }
+    .player-info{
+      display: flex;
+      align-items:center;
+      .player-turn{
+        display: none;
+      }
+      .player-avatar{
+        margin: 0 8px 0 0;
+
+      }
+    }
+  }
+}
