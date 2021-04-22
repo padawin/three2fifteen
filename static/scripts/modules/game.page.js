@@ -119,7 +119,10 @@ loader.executeModule('gamePageModule',
 	const _prepareData = () => {
 		let template;
 		Game.analyseGame(module.data.game);
-		if (module.data.game.ongoing) {
+		if (module.data.game.open) {
+			template = 'game_open';
+		}
+		else if (module.data.game.ongoing) {
 			template = 'game_ongoing';
 			module.data.game.size_bag = module.data.game_content.size_bag;
 			Game.setBoardContent(
@@ -190,15 +193,6 @@ loader.executeModule('gamePageModule',
 				player_turn: {html: B.$id('template-player-turn').innerHTML},
 				winner_token: {html: B.$id('winner-token').innerHTML}
 			});
-
-			const gameOpen = module.data.game.players.length < module.data.game.number_players;
-			if (gameOpen) {
-				B.$id('game-section').innerHTML = B.Template.compile(
-					'game_open',
-					module.data
-				);
-				return;
-			}
 
 			Socket.join(
 				{
