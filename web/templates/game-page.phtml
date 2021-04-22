@@ -54,7 +54,18 @@
 	</script>
 
 	<script type="template" id="game-open">
-		Game open
+		<div id="game-play-section" class="col-lg-8">
+			<h3>Invite to play</h3>
+			<div class="copy-link-group">
+				<input type="text" id="link-game" readonly class="copy-link-text" value="[[host]]/join/[[game.id]]" />
+				<a class="copy-link-group-append" href="[[host]]game/join/[[game.id]]">
+					<button id="copy-link-btn" rel="link-game" class="btn btn-outline-secondary copy-link-btn" type="button" >Copy Link</button>
+				</a>
+			</div>
+			<div id="player-scores" class="col-lg-4 d-lg-block">
+				[[each game.players as player on player_score]]
+			</div>
+		</div>
 	</script>
 
 	<script type="template" id="game-finished">
