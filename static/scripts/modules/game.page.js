@@ -121,6 +121,7 @@ loader.executeModule('gamePageModule',
 		Game.analyseGame(module.data.game);
 		if (module.data.game.open) {
 			template = 'game_open';
+			module.data.host = window.location.protocol + '//' + window.location.host;
 		}
 		else if (module.data.game.ongoing) {
 			template = 'game_ongoing';
@@ -151,7 +152,16 @@ loader.executeModule('gamePageModule',
 	};
 
 	const _setEvents = () => {
-		if (module.data.game.ongoing) {
+		if (module.data.game.open) {
+			B.$id("copy-link-btn").addEventListener('click', (e) => {
+				e.preventDefault();
+				let field = B.$id(e.target.getAttribute('rel'));
+				B.removeClass(field, "hidden");
+				field.select();
+				document.execCommand("Copy");
+			});
+		}
+		else if (module.data.game.ongoing) {
 			// Set events
 			document.querySelectorAll('#player-hand .token').forEach((token) => {
 				token.addEventListener('dragstart', (e) => {
