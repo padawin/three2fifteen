@@ -22,16 +22,16 @@ class GameModel:
             "id": self.id,
             "number_players": self.number_players,
             "count_players": len(self.players),
-            "players": {
-                p["id"]: {
+            "players": [
+                {
                     "id_player": idx + 1,
                     "name": p["name"],
                     "points": p["points"],
-                    "is_turn": p["is_turn"]
+                    "is_turn": p["is_turn"],
+                    "is_current": self.current_player == p["id"]
                 }
                 for idx, p in enumerate(self.players.values())
-            },
-            "current_player": self.current_player,
+            ],
             "played_tokens": self.played_tokens,
             "date_created": self.date_created,
             "date_started": self.date_started,

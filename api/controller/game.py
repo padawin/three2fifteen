@@ -14,8 +14,10 @@ class GameController(Controller):
         if game is None:
             return self.format_response({'message': "No game found"}), 404
         response = game.dict()
-        response["players"][self.player['id_player']]['is_current'] = True
-        response["players"][self.player['id_player']]['name'] = "You"
+        for idx, player_id in enumerate(game.players.keys()):
+            if player_id == self.player['id_player']:
+                response["players"][idx]['name'] = "You"
+                break
         self._format_date(response)
         return self.format_response(response)
 

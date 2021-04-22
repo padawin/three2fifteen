@@ -32,17 +32,16 @@ loader.addModule('Game',
 		},
 		findWinner: (game) => {
 			let maxPoints = 0, winner = null;
-			for (let user_id in game.players) {
-				let player = game.players[user_id];
+			for (let player of game.players) {
 				if (player.points > maxPoints) {
 					maxPoints = player.points;
-					winner = user_id;
+					winner = player;
 				}
 			}
 
 			if (winner != null) {
-				game.winner = game.players[winner];
-				game.current_is_winner = game.players[winner].is_current;
+				game.winner = winner;
+				game.current_is_winner = winner.is_current;
 			}
 		},
 		setBoardContent: (board, content) => {
