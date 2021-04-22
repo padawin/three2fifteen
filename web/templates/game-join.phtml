@@ -1,0 +1,28 @@
+{% extends "layout.phtml" %}
+{% block body %}
+	{% include "header.phtml" %}
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col-lg-6">
+				<h3>Join Game</h3>
+				<div class="card">
+					<div class="card-body">
+						<form id="game-join-form" method="PUT" action="">
+							<div id="form-message"></div>
+							<div class="form-group">
+								<label for="player_name">Your nickname</label>
+								<input name="player_name" id="player_name" placeholder="Nickname" />
+							</div>
+
+							<input type="submit" class="btn btn-primary btn-full-width" value="Join" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript" src="{{ url_for('static', filename='scripts/modules/game.join.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='scripts/modules/header.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends "layout.phtml" %}
+{% block body %}
+	{% include "header.phtml" %}
+	<div class="container rules">
+		<div class="row justify-content-md-center">
+			<div class="col-lg-6">
+				<h1>Rules</h1>
+				<h2>Game objectives</h2>
+				<p>
+					To make the maximum number of points by taking turns to
+					place one, two or three tokens crossword-style on the
+					board.
+				</p>
+				<h2>Game creation</h2>
+				<p>
+					A game can be created from the home page. When creating a
+					game, the number of players must be defined (between two
+					and four).
+				</p>
+				<p>
+					When a game is created, an invite link is created (available
+					from the home page) and must be sent to the other players
+					so they can join it. The game starts when all the players
+					joined the game.
+				</p>
+				<p>
+					The player starting the game is choosen randomly.
+				</p>
+				<h2>How to play</h2>
+				<p>
+					Turn by turn, the players place one, two or three tokens
+					from their hand onto the board. Tokens must be placed
+					horizontally or vertically, but must alwayes touch at least
+					one of the previously placed token.
+				</p>
+				<p>
+					A maximum of three tokens can be aligned side by side
+					(horizontally of vertically) and the tokens played at a
+					given turn must be aligned (although not necessarily
+					touching each other, they can, for example, surround a third
+					token).
+				</p>
+				<p>
+					Each set of three tokens must add up exactly 15. Each set of
+					2 tokens must add up 15 or less.
+				</p>
+				<h3>First turn</h3>
+				<p>
+					For the first turn, one of the played tokens must be placed
+					on the center space of the board.
+				</p>
+				<h3>Points counting</h3>
+				<p>
+					Points are counted by adding up the total values of the
+					tokens:
+					<ul>
+						<li>
+							Placing token <span class="token">2</span> next to
+							token <span class="token">4</span> on the board would
+							be worth 6 points.
+						</li>
+						<li>
+							Placing token <span class="token">7</span> with token
+							<span class="token">8</span>,
+							<span class="token">7</span> above token
+							<span class="token">2</span> would be worth
+							be worth 24 points (7 + 2 down and 7 + 8 across).
+						</li>
+						<li>
+							When completing a row or column of three tokens
+							(therefore summing them to 15), the player will get
+							the sum of them (15) plus a 15 points bonus. For
+							example, placing a <span class="token">2</span> next
+							to a <span class="token">9</span> and a
+							<span class="token">4</span> would give 30 points.
+						</li>
+						<li>
+							If a player's hand sums exactly 15 points and the
+							player can play them all at once, a bonus of 50
+							points will be granted, making the score at least 80
+							points (30 for completing a set of 3 tokens, 50 for
+							emptying the hand), plus the points of the adjacent
+							tokens.
+						</li>
+					</ul>
+				</p>
+				<h3>Special spaces</h3>
+				<p>
+					There are 4 different special spaces on the board:
+					<ul>
+						<li>
+							Doubles and triples: When a token is plcaed over a
+							<b>double</b> <span class="cell cell-double"> </span> or a <b>triple</b> <span class="cell cell-triple"> </span> space, the value of
+							that token is doubled or tripled. If the played
+							token completes a row or column of three tokens, the
+							whole 30 points that the player would have got are
+							doubled or tripled (granting 60 or 90 points).
+						<li>
+							The center space <span class="cell cell-start"> </span> must be used on the first turn, and
+							acts as a <b>double</b>.
+						</li>
+						<li>
+							Repeat: when playing on a repeat space <span class="cell cell-repeat"> </span>, the player
+							will be able to play a second time (after redrawing
+							tokens to fill his/her hand). Repeat spaces are
+							cumulative, if after a <b>repeat</b> the player
+							plays again on another one, he/she will be able to
+							play a third time.
+						</li>
+					</ul>
+				</p>
+				<h2>End of the game and winner</h2>
+				<p>
+					The game ends when all the tokens are played and the winner
+					is the player having scored the highest cumulative score.
+				</p>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript" src="{{ url_for('static', filename='scripts/modules/header.js') }}"></script>
+{% endblock %}

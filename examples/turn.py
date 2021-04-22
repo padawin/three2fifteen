@@ -1,9 +1,9 @@
-from app.model.model import Model
+from api.model.model import Model
 Model.connect("dbname=three2fifteen_game user=postgres host=172.17.0.2 password=mysecretpassword")
-from app.service.turn import TurnService
-from app.model.game import GameModel
-from app.model.game_player import GamePlayerModel
-from app.model.turn import TurnModel
+from api.service.turn import TurnService
+from api.model.game import GameModel
+from api.model.game_player import GamePlayerModel
+from api.model.turn import TurnModel
 ts = TurnService(GameModel, TurnModel, GamePlayerModel)
 res = ts.turn(1, 2, [])
 print(res)

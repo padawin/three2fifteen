@@ -4,25 +4,24 @@
 from setuptools import setup
 
 
-setup(name='three2fifteen-api',
+setup(name='three2fifteen',
       version='0.0.1',
-      description='Three2Fifteen API',
+      description='Three2Fifteen',
       url='http://github.com/three2fifteen/api',
       author='Ghislain Rodrigues',
       author_email='three2fifteen@ghislain-rodrigues.fr',
       license='MIT',
-      packages=['app'],
+      packages=['.'],
       long_description=open('README.rst').read(),
       install_requires=[
-          'psycopg2',
           'flask',
           'pyjwt',
-          'flask-cors',
+          'tornado',
           'requests'
       ],
       entry_points={
           'console_scripts': [
-              'three2fifteen-api = app.app:main'
+              'three2fifteen = app.app:main'
           ],
       },
       classifiers=[

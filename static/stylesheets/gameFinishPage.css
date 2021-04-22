@@ -1,0 +1,27 @@
+#game-finished-section {
+  text-align: center; }
+  #game-finished-section .image {
+    width: 300px;
+    height: 300px;
+    margin: 24px auto; }
+    #game-finished-section .image.winner {
+      background-image: url("../images/cup.png");
+      background-size: contain;
+      width: 160px;
+      height: 160px; }
+  #game-finished-section .btn {
+    margin-bottom: 32px; }
+  #game-finished-section #player-scores {
+    border-left: none; }
+    #game-finished-section #player-scores .score {
+      padding: 8px 16px;
+      border-left: none; }
+    #game-finished-section #player-scores .player-info {
+      display: flex;
+      align-items: center; }
+      #game-finished-section #player-scores .player-info .player-turn {
+        display: none; }
+      #game-finished-section #player-scores .player-info .player-avatar {
+        margin: 0 8px 0 0; }
+
+/*# sourceMappingURL=gameFinishPage.css.map */

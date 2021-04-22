@@ -1,0 +1,91 @@
+@import "bootstrap/bootstrap";
+@import "config";
+
+*,
+*::after,
+*::before {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+html{
+	font-size: 14px;
+}
+
+body {
+  background: $background-color;
+	font: $body;
+}
+
+h1{
+	font: $display1;
+}
+
+h2{
+	font: $headline;
+}
+
+h3{
+	margin: 24px 0 12px;
+	font: $header;
+}
+
+h4{
+	font: $subhead;
+}
+
+h5{
+	font: $body2;
+}
+
+.fullscreen{
+	height: 100vh;
+}
+
+.btn-full-width{
+	width: 100%;
+}
+
+.card{
+	background-color: $light-gray;
+}
+
+.btn-primary{
+	background-color: $blue;
+	border-color: $blue;
+}
+
+.bg-primary{
+	background-color:$primary-color!important;
+}
+
+.btn-primary.disabled, .btn-primary:disabled{
+	background-color: #cccccc;
+	border-color: #cccccc;
+}
+
+.btn-light{
+	background-color: transparent;
+	border-color: transparent;
+}
+
+.btn-light:hover{
+	background-color: rgba(255,255,255,0.2);
+	border-color: rgba(255,255,255,0.2);
+}
+.btn{
+	height: 36px;
+}
+
+.btn:hover{
+	cursor: pointer;
+}
+
+.hidden{
+	display: none!important;
+}
+
+@import "gamelist";
+@import "gamePage";
+@import "createGame";
+@import "gameFinishPage";
+@import "rules";

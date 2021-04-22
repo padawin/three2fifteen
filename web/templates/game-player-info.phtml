@@ -1,0 +1,18 @@
+<script type="template" id="template-game-creator">
+
+</script>
+
+<script type="template" id="template-player-turn">
+	<i class="material-icons player-turn">play_arrow</i>
+</script>
+
+<script type="template" id="template-player-score">
+	<div class="score" id="score-player-[[player.id_player]]">
+		<div class="player-info">
+			[[if player.is_turn then player_turn]]
+			<div class="player-avatar" id="player-[[player.id_player]]-image"></div>
+			<div>[[player.name]]</div>
+		</div>
+		<div class="player-score">[[player.points]]</div>
+	</div>
+</script>
