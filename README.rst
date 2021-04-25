@@ -1,4 +1,4 @@
-# Three2Fifteen Application API service
+# Three2Fifteen Application
 
 ## Requirements
 
@@ -10,21 +10,19 @@ Python 3.6
 
 ## Setup
 
-Copy config.template.cfg to config.cfg and update the content to fit your
+Copy config.py.example to config.py and update the content to fit your
 environment.
 
 Start then with:
 
-	env THREE2FIFTEEN_API_SETTINGS=/path/to/config.cfg three2fifteen-api
+	python app.py
 
-## Database
+To use the app in development mode, use:
 
-A Postgres database is needed. For development purposes, docker can be used:
-
-	$ docker run --name three2fifteen-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+	DEV=1 python app.py
 
 ## Tests
 
 Install ``requirements_dev.txt``, then run:
 
-    $ pytest
+    $ PYTHONPATH=. pytest
