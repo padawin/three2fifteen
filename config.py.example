@@ -1,0 +1,21 @@
+class Config(object):
+    # API Conf
+    APP_NAME = 'Three2Fifteen'
+    SECRET_KEY = 'secretjwtkey'
+
+    # Web Conf
+    # TODO Clean
+    API_HOST = 'https://production-host.web'
+    API_LOGIN = '/api/login'
+    API_GET_BOARD = '/api/board'
+    API_GET_GAME_CONTENT = '/api/game/%s/content'
+    API_GET_GAME = '/api/game/%s'
+    API_GET_HAND = '/api/game/%s/hand'
+    API_TURN_CHECK = '/api/game/%s/turn/check'
+    API_CREATE_GAME = '/api/game'
+    API_JOIN_GAME = '/api/game/%s/join'
+    API_TURN = '/api/game/%s/turn'
+
+
+class DevConfig(Config):
+    API_HOST = 'http://localhost:5000'

@@ -3,8 +3,9 @@ loader.addModule('Socket', 'config', (config) => {
 	let module = {};
 
 	module.join = (onMessageHooks, gameId) => {
+		const protocol = location.protocol == "https" ? "wss" : "ws";
 		socket = new WebSocket(
-			"ws://" + location.hostname + ":" + location.port + "/websocket/"
+			protocol + "://" + location.hostname + ":" + location.port + "/websocket/"
 		);
 		socket.onopen = function() {
 			module.message({'type': 'join', 'game_id': gameId});
