@@ -80,6 +80,7 @@ class WebSocket(WebSocketHandler):
     def open(self):
         self._logger = logging.getLogger(__name__)
         self._logger.info("Socket opened")
+        self.write_message('"hello world"')
 
     def on_message(self, message):
         """
