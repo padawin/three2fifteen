@@ -39,6 +39,13 @@ def get_game(game_id, identity):
     return controller.get(str(game_id))
 
 
+@bp.route('/game/<uuid:game_id>/status', methods=['GET'])
+@api.plugin.need_auth
+def get_game_status(game_id, identity):
+    controller = GameController(request, identity)
+    return controller.get_status(str(game_id))
+
+
 @bp.route('/game/<uuid:game_id>/content', methods=['GET'])
 @api.plugin.need_auth
 def get_game_content(game_id, identity):

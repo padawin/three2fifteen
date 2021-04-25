@@ -8,6 +8,13 @@ class GameController(Controller):
     def __init__(self, request, identity):
         self.player = identity
 
+    def get_status(self, game_id):
+        gs = GameService(GameModel)
+        game = gs.get(game_id)
+        if game is None:
+            return self.format_response({'message': "No game found"}), 404
+        return self.format_response({"current_turn": game.turn})
+
     def get(self, game_id):
         gs = GameService(GameModel)
         game = gs.get(game_id)

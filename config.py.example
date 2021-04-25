@@ -4,11 +4,11 @@ class Config(object):
     SECRET_KEY = 'secretjwtkey'
 
     # Web Conf
-    # TODO Clean
     API_HOST = 'https://production-host.web'
     API_LOGIN = '/api/login'
     API_GET_BOARD = '/api/board'
     API_GET_GAME_CONTENT = '/api/game/%s/content'
+    API_GET_GAME_STATUS = '/api/game/%s/status'
     API_GET_GAME = '/api/game/%s'
     API_GET_HAND = '/api/game/%s/hand'
     API_TURN_CHECK = '/api/game/%s/turn/check'

@@ -72,8 +72,7 @@ class TurnService(object):
 
         score_play = score.calculate_score(current_board, play, play_result)
         if not dry_run:
-            game.players[player_id]["points"] += score_play
-            game.played_tokens.extend(play)
+            game.do_turn(player_id, play, score_play)
             for token in play:
                 current_player['hand'].remove(token['value'])
 
