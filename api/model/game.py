@@ -13,6 +13,7 @@ class GameModel:
         self.players = {}
         self.current_player = None
         self.played_tokens = []
+        self.turn = 0
         self.date_created = datetime.now()
         self.date_started = None
         self.date_finished = None
@@ -64,6 +65,7 @@ class GameModel:
         self.date_started = datetime.now()
         self.current_player = random.choice(list(self.players.keys()))
         self.players[self.current_player]["is_turn"] = True
+        self.turn += 1
 
     def end(self):
         self.date_finished = datetime.now()
@@ -75,3 +77,8 @@ class GameModel:
         next_player_id = player_ids[(current_player_index + 1) % len(player_ids)]
         self.players[next_player_id]["is_turn"] = True
         self.current_player = next_player_id
+
+    def do_turn(self, player_id, play, score_play):
+        self.players[player_id]["points"] += score_play
+        self.played_tokens.extend(play)
+        self.turn += 1
