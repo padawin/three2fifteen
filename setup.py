@@ -16,7 +16,7 @@ setup(name='three2fifteen',
       install_requires=[
           'flask',
           'pyjwt',
-          'tornado',
+          'tornado==5.1',
           'requests'
       ],
       entry_points={

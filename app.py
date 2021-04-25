@@ -5,6 +5,7 @@ import http.client as http_client
 from tornado.wsgi import WSGIContainer
 from tornado.web import Application, FallbackHandler
 from tornado.ioloop import IOLoop
+import tornado.wsgi
 
 from websocket import websocket
 from api.routes import bp as api_routes
@@ -47,7 +48,7 @@ server = Application(
     ],
     autoreload=True
 )
-application = server  # our hosting requires application in passenger_wsgi
+application = wsgi_app = tornado.wsgi.WSGIAdapter(server)  # our hosting requires application in passenger_wsgi
 
 if __name__ == "__main__":
     server.listen(5000)
