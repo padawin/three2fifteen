@@ -8,7 +8,15 @@ loader.addModule('request', () => {
 		xhr.setRequestHeader("Content-type", "application/json");
 		xhr.onreadystatechange = (e) => {
 			if (e.target.readyState == 4) {
-				doneCallback(e.target.status, JSON.parse(e.target.response));
+				try {
+					const content = JSON.parse(e.target.response);
+					doneCallback(e.target.status, content);
+				}
+				catch (ex) {
+					console.log(method, url);
+					console.log(e.target.response);
+					console.log(ex);
+				}
 			}
 		};
 		xhr.send(data);

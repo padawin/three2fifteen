@@ -10,6 +10,8 @@ function (auth, request, utils, config) {
 	}
 
 	function handleError(error) {
+		console.log(error);
+		return;
 		if (error == 401) {
 			utils.goToUrl('/');
 		}

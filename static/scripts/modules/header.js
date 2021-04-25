@@ -5,6 +5,7 @@ loader.executeModule('headerModule',
 		'action': () => {
 			B.$id('logout-button').addEventListener('click', (e) => {
 				e.preventDefault();
+				console.log("here");
 				auth.unsetToken();
 				utils.goToUrl('/');
 			});

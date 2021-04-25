@@ -11,6 +11,7 @@ def _join_game(socket, data):
     except KeyError:
         return
 
+    print(WebSocket._game_rooms)
     try:
         room = WebSocket._game_rooms[game_id]
     except KeyError:

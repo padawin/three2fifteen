@@ -20,6 +20,7 @@ loader.addModule('Socket', 'config', (config) => {
 
 	module.join = (onMessageHooks, gameId, failCallback) => {
 		const protocol = location.protocol == "https:" ? "wss:" : "ws:";
+		console.log(protocol);
 		socket = new WebSocket(
 			protocol + "//" + location.hostname + ":" + location.port + "/websocket/"
 		);
