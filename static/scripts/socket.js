@@ -28,7 +28,9 @@ loader.addModule('Socket', 'config', (config) => {
 		};
 
 		module.message = function(data) {
-			socket.send(JSON.stringify(data));
+			if (socket.readyState == 0) {
+				socket.send(JSON.stringify(data));
+			}
 		}
 
 		socket.onmessage = function(message) {
