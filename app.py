@@ -1,4 +1,5 @@
 import logging
+import os
 from flask import Flask
 import http.client as http_client
 from tornado.wsgi import WSGIContainer
@@ -27,7 +28,9 @@ def register_logger():
 app = Flask('three2fifteen')
 
 app.config.update({})
-app.config.from_envvar('THREE2FIFTEEN_SETTINGS', silent=True)
+app.config.from_object('config.Config')
+if os.environ.get("DEV"):
+    app.config.from_object('config.DevConfig')
 
 logger = logging.getLogger("{} logger".format(app.name))
 logger.setLevel(logging.DEBUG)
