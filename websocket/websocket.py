@@ -3,6 +3,31 @@ import logging
 from tornado.websocket import WebSocketHandler
 
 
+def _get_status(socket, data):
+    logger = logging.getLogger(__name__)
+    try:
+        game_id = data['game_id']
+    except KeyError:
+        logger.error("No game found in data")
+        return
+    try:
+        room = WebSocket._game_rooms[game_id]
+    except KeyError:
+        logger.error("no room found for game id: {}".format(game_id))
+
+    if socket not in room:
+        socket.write_message(json.dumps(
+            {'type': 'status', 'message': 'Socket not in room'}
+        ))
+    else:
+        socket.write_message(json.dumps(
+            {
+                'type': 'status',
+                'message': 'Socket in room with {} other sockets'.format(len(room)-1)
+            }
+        ))
+
+
 def _join_game(socket, data):
     logger = logging.getLogger(__name__)
     logger.info("Try join game, %s", data)
@@ -48,7 +73,8 @@ class WebSocket(WebSocketHandler):
 
     _actions_mapping = {
         "join": _join_game,
-        "play": _broadcast_play
+        "play": _broadcast_play,
+        "status": _get_status
     }
 
     def open(self):

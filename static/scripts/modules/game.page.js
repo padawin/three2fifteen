@@ -231,10 +231,16 @@ loader.executeModule('gamePageModule',
 				{
 					'player-played': _refresh,
 					'player-joined': _refresh,
+					'status': function (data) {
+						console.log(data.message);
+					}
 				},
 				gameId,
 				observeGameChanges
 			);
+			setInterval(function() {
+				Socket.message({'type': 'status', 'game_id': module.data.game.id});
+			},1000);
 			// Render page
 			_render();
 		}
