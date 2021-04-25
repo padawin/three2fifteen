@@ -1,6 +1,6 @@
 loader.executeModule('gamePageModule',
-'config', 'app', 'B', 'utils', 'Game', 'Socket',
-(config, app, B, utils, Game, Socket) => {
+'config', 'app', 'B', 'utils', 'Game', 'Socket', 'request', 'auth',
+(config, app, B, utils, Game, Socket, request, auth) => {
 	const gameId = B.$id('game_id').dataset.value;
 
 	const getLiNode = (node) => {
@@ -183,6 +183,29 @@ loader.executeModule('gamePageModule',
 		}
 	};
 
+	// Callback to setup a manual periodic call to the server, to know whether
+	// the game changed.
+	// This is used as a fallback when WebSocket do not work.
+	let gameStatus = null;
+	let observeGameChanges = function() {
+		setInterval(function() {
+			request.get(
+				config.api_host + utils.format(config.api_get_game_status, [gameId]),
+				auth.getHeader(),
+				(response_status, response) => {
+					if (response_status != 200) {
+						return;
+					}
+
+					if (gameStatus !== response.current_turn) {
+						gameStatus = response.current_turn;
+						_refresh();
+					}
+				}
+			);
+		}, 1000);
+	};
+
 	let module = {
 		'dataUrls': [
 			{'url': config.api_get_board, 'name': 'board'},
@@ -209,7 +232,8 @@ loader.executeModule('gamePageModule',
 					'player-played': _refresh,
 					'player-joined': _refresh,
 				},
-				gameId
+				gameId,
+				observeGameChanges
 			);
 			// Render page
 			_render();
