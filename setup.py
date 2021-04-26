@@ -12,7 +12,7 @@ setup(name='three2fifteen',
       author_email='three2fifteen@ghislain-rodrigues.fr',
       license='MIT',
       packages=['.'],
-      long_description=open('README.rst').read(),
+      long_description=open('README.md').read(),
       install_requires=[
           'flask',
           'pyjwt',
