@@ -142,6 +142,7 @@ def test_turn_ok_end_game(mock_fillHand, mock_isEmpty):
     games[game_id].players[1]["is_turn"] = True
     games[game_id].players[1]["hand"] = [10, 4]
     games[game_id].players[2]["is_turn"] = False
+    games[game_id].players[2]["hand"] = [7, 8, 4]
     mock_isEmpty.return_value = True
     mock_fillHand.return_value = []
     # should return all the plays for the whole bag, minus the current play,
@@ -159,6 +160,9 @@ def test_turn_ok_end_game(mock_fillHand, mock_isEmpty):
     )
     assert res == (True, 24)
     assert games[game_id].date_finished is not None
+    # Sum of the player's turns (1 in this case) + the other players' tokens
+    assert games[game_id].players[1]["points"] == 24 + (7+8+4)
+    assert games[game_id].players[2]["points"] == 0
 
 
 def test_turn_ko():
