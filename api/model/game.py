@@ -68,7 +68,16 @@ class GameModel:
         self.turn += 1
 
     def end(self):
+        self.players[self.current_player]["points"] += self._sum_points_players_tokens()
         self.date_finished = datetime.now()
+
+    def _sum_points_players_tokens(self):
+        score = 0
+        for pid, player in self.players.items():
+            # No need to exclude current player, as their hand is empty (this
+            # is called when a player finishes the game
+            score += sum(token for token in player["hand"])
+        return score
 
     def set_next_player(self):
         self.players[self.current_player]["is_turn"] = False
