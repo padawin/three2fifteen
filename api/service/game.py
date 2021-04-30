@@ -7,14 +7,15 @@ class GameService(object):
     INVALID_NUMBER_PLAYERS = 5
     UNKNOWN_PLAYER = 6
 
-    def __init__(self, game_model):
+    def __init__(self, game_model, config):
         self.game_model = game_model
+        self.config = config
 
     def get(self, game_id):
-        return self.game_model.loadById(game_id)
+        return self.game_model.loadById(game_id, self.config)
 
     def get_player_hand(self, game_id, player_id):
-        game = self.game_model.loadById(game_id)
+        game = self.game_model.loadById(game_id, self.config)
         if game is None:
             return (False, GameService.NO_GAME_FOUND)
         player = game.players.get(player_id)
@@ -32,7 +33,7 @@ class GameService(object):
         if number_players < 2 or number_players > 4:
             return (False, GameService.INVALID_NUMBER_PLAYERS)
 
-        game = self.game_model.create(number_players)
+        game = self.game_model.create(number_players, self.config)
         game.add_player(player_id, player_name)
         return (True, game.id)
 
@@ -44,7 +45,7 @@ class GameService(object):
         If the player is added, the boolean will be True, othewise the boolean
         will be False and the code will be set
         """
-        game = self.game_model.loadById(game_id)
+        game = self.game_model.loadById(game_id, self.config)
         if game is None:
             return (False, GameService.NO_GAME_FOUND)
 

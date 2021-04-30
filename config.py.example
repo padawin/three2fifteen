@@ -1,3 +1,6 @@
+from os import path
+
+
 class Config(object):
     # API Conf
     APP_NAME = 'Three2Fifteen'
@@ -15,6 +18,7 @@ class Config(object):
     API_CREATE_GAME = '/api/game'
     API_JOIN_GAME = '/api/game/%s/join'
     API_TURN = '/api/game/%s/turn'
+    GAMES_STORAGE_DIR = path.join(path.dirname(__file__), "data", "games")
 
 
 class DevConfig(Config):

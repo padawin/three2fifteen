@@ -11,8 +11,9 @@ class TurnService(object):
     INVALID_PLAY_TYPE = 7
     CAN_STILL_PLAY = 8
 
-    def __init__(self, game_model):
+    def __init__(self, game_model, config):
         self.game_model = game_model
+        self.config = config
 
     def _get_bag(self, players, tokens_in_game):
         b = bag.Bag(
@@ -22,7 +23,7 @@ class TurnService(object):
         return b
 
     def get_game_content(self, game_id):
-        game = self.game_model.loadById(game_id)
+        game = self.game_model.loadById(game_id, self.config)
         if game is None:
             return None
 
@@ -30,7 +31,7 @@ class TurnService(object):
         return game.played_tokens, len(bag.tokens)
 
     def _pre_turn(self, game_id, player_id):
-        game = self.game_model.loadById(game_id)
+        game = self.game_model.loadById(game_id, self.config)
         if game is None:
             return (False, TurnService.NO_GAME_FOUND)
         elif game.date_started is None:

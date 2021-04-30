@@ -1,19 +1,34 @@
 import pytest
 import random
+import os
+import shutil
 from unittest.mock import patch
 
 from api.game import bag
 from api.service import turn, game
 from api.model.game import GameModel, games
 
+games_storage_dir = "/tmp/three2fifteen-tests"
+config = {
+    "GAMES_STORAGE_DIR": games_storage_dir
+}
+
+
+def setup_module(module):
+    os.makedirs(games_storage_dir)
+
+
+def teardown_module(module):
+    shutil.rmtree(games_storage_dir)
+
 
 def test_invalid_play_type():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     service.add_player(game_id, 2, "doe")
     games[game_id].players[1]["is_turn"] = True
     games[game_id].players[2]["is_turn"] = False
-    service = turn.TurnService(GameModel)
+    service = turn.TurnService(GameModel, config)
     fixtures = (
         ("foo", turn.TurnService.INVALID_PLAY_TOKEN),
         ({'x': 8, 'toto': 7, 'value': 4}, turn.TurnService.INVALID_PLAY_TYPE),
@@ -24,13 +39,13 @@ def test_invalid_play_type():
 
 
 def test_wrong_turn_player():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     service.add_player(game_id, 2, "doe")
     games[game_id].current_player = 1
     games[game_id].players[1]["is_turn"] = True
     games[game_id].players[2]["is_turn"] = False
-    service = turn.TurnService(GameModel)
+    service = turn.TurnService(GameModel, config)
     res = service.turn(
         game_id,
         2,
@@ -55,14 +70,14 @@ def test_wrong_turn_player():
          "Partly different"]
 )
 def test_play_not_in_hand(hand, play):
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     service.add_player(game_id, 2, "doe")
     games[game_id].current_player = 1
     games[game_id].players[1]["is_turn"] = True
     games[game_id].players[1]["hand"] = hand
     games[game_id].players[2]["is_turn"] = False
-    service = turn.TurnService(GameModel)
+    service = turn.TurnService(GameModel, config)
     res = service.turn(
         game_id,
         1,
@@ -73,7 +88,7 @@ def test_play_not_in_hand(hand, play):
 
 
 def test_turn_ok_next_player():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     service.add_player(game_id, 2, "doe")
     games[game_id].current_player = 1
@@ -81,7 +96,7 @@ def test_turn_ok_next_player():
     games[game_id].players[1]["hand"] = [10, 4, 5]
     games[game_id].players[2]["is_turn"] = False
     games[game_id].players[2]["hand"] = [10, 4, 5]
-    service = turn.TurnService(GameModel)
+    service = turn.TurnService(GameModel, config)
     assert games[game_id].played_tokens == []
     assert games[game_id].players[1]["is_turn"] is True
     assert games[game_id].players[2]["is_turn"] is False
@@ -104,7 +119,7 @@ def test_turn_ok_next_player():
 
 
 def test_turn_dry_run():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     service.add_player(game_id, 2, "doe")
     games[game_id].current_player = 1
@@ -112,7 +127,7 @@ def test_turn_dry_run():
     games[game_id].players[1]["hand"] = [10, 4, 5]
     games[game_id].players[2]["is_turn"] = False
     games[game_id].players[2]["hand"] = [10, 4, 5]
-    service = turn.TurnService(GameModel)
+    service = turn.TurnService(GameModel, config)
     assert games[game_id].played_tokens == []
     assert games[game_id].players[1]["is_turn"] is True
     assert games[game_id].players[2]["is_turn"] is False
@@ -135,7 +150,9 @@ def test_turn_dry_run():
 @patch.object(bag.Bag, 'is_empty')
 @patch.object(bag.Bag, 'fill_hand')
 def test_turn_ok_end_game(mock_fillHand, mock_isEmpty):
-    service = game.GameService(GameModel)
+    mock_isEmpty.return_value = True
+    mock_fillHand.return_value = []
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     service.add_player(game_id, 2, "doe")
     games[game_id].current_player = 1
@@ -143,12 +160,11 @@ def test_turn_ok_end_game(mock_fillHand, mock_isEmpty):
     games[game_id].players[1]["hand"] = [10, 4]
     games[game_id].players[2]["is_turn"] = False
     games[game_id].players[2]["hand"] = [7, 8, 4]
-    mock_isEmpty.return_value = True
-    mock_fillHand.return_value = []
     # should return all the plays for the whole bag, minus the current play,
     # which in then emptying the bag
-    service = turn.TurnService(GameModel)
+    service = turn.TurnService(GameModel, config)
     assert games[game_id].date_finished is None
+    assert os.path.isfile(os.path.join(config["GAMES_STORAGE_DIR"], game_id))
     res = service.turn(
         game_id,
         1,
@@ -163,17 +179,18 @@ def test_turn_ok_end_game(mock_fillHand, mock_isEmpty):
     # Sum of the player's turns (1 in this case) + the other players' tokens
     assert games[game_id].players[1]["points"] == 24 + (7+8+4)
     assert games[game_id].players[2]["points"] == 0
+    assert not os.path.isfile(os.path.join(config["GAMES_STORAGE_DIR"], game_id))
 
 
 def test_turn_ko():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     service.add_player(game_id, 2, "doe")
     games[game_id].current_player = 1
     games[game_id].players[1]["is_turn"] = True
     games[game_id].players[1]["hand"] = [10, 4]
     games[game_id].players[2]["is_turn"] = False
-    service = turn.TurnService(GameModel)
+    service = turn.TurnService(GameModel, config)
     res = service.turn(
         game_id,
         1,
@@ -187,7 +204,7 @@ def test_turn_ko():
 
 
 def test_turn_unexisting_game():
-    service = turn.TurnService(GameModel)
+    service = turn.TurnService(GameModel, config)
     res = service.turn(
         '123',
         '456',
@@ -203,9 +220,9 @@ def test_turn_unexisting_game():
 
 
 def test_turn_not_started_game():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
-    service = turn.TurnService(GameModel)
+    service = turn.TurnService(GameModel, config)
     res = service.turn(
         game_id,
         1,
@@ -221,11 +238,11 @@ def test_turn_not_started_game():
 
 
 def test_turn_game_already_finished():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     service.add_player(game_id, 2, "doe")
     games[game_id].end()
-    service = turn.TurnService(GameModel)
+    service = turn.TurnService(GameModel, config)
     res = service.turn(
         game_id,
         1,
@@ -241,8 +258,8 @@ def test_turn_game_already_finished():
 
 
 def test_turn_get_game_content_unknown_game():
-    service = turn.TurnService(GameModel)
-    res = service.get_game_content(123)
+    service = turn.TurnService(GameModel, config)
+    res = service.get_game_content('123')
     assert res is None
 
 
@@ -260,11 +277,11 @@ def test_turn_get_game_content(mock_choice):
         # hand refil player 2
         2, 3
     ]
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     service.add_player(game_id, 2, "doe")
     service.add_player(game_id, 3, "tomo")
-    service = turn.TurnService(GameModel)
+    service = turn.TurnService(GameModel, config)
     res = service.turn(game_id, 1, [{'x':7,'y':7,'value':3}], dry_run=False)
     assert res[0] is True
     assert games[game_id].players[1]["hand"] == [10, 4, 1]
@@ -299,7 +316,7 @@ def test_turn_get_game_content(mock_choice):
          "OK"]
 )
 def test_skip_turn(player_hand, token_to_exchange, expected_result, dry_run):
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     service.add_player(game_id, 2, "doe")
     games[game_id].played_tokens = [
@@ -312,7 +329,7 @@ def test_skip_turn(player_hand, token_to_exchange, expected_result, dry_run):
     games[game_id].players[1]["is_turn"] = True
     games[game_id].players[1]["hand"] = player_hand
     games[game_id].players[2]["is_turn"] = False
-    service = turn.TurnService(GameModel)
+    service = turn.TurnService(GameModel, config)
     res = service.skip_turn(game_id, 1, token_to_exchange, dry_run=dry_run)
     assert res == expected_result
     if res[0]:
@@ -325,7 +342,9 @@ def test_skip_turn(player_hand, token_to_exchange, expected_result, dry_run):
 @patch.object(bag.Bag, 'is_empty')
 @patch.object(bag.Bag, 'fill_hand')
 def test_skip_ok_end_game(mock_fillHand, mock_isEmpty):
-    service = game.GameService(GameModel)
+    mock_isEmpty.return_value = True
+    mock_fillHand.return_value = []
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     service.add_player(game_id, 2, "doe")
     games[game_id].played_tokens = [
@@ -338,11 +357,9 @@ def test_skip_ok_end_game(mock_fillHand, mock_isEmpty):
     games[game_id].players[1]["is_turn"] = True
     games[game_id].players[1]["hand"] = [12, 15, 14]
     games[game_id].players[2]["is_turn"] = False
-    mock_isEmpty.return_value = True
-    mock_fillHand.return_value = []
     # should return all the plays for the whole bag, minus the current play,
     # which in then emptying the bag
-    service = turn.TurnService(GameModel)
+    service = turn.TurnService(GameModel, config)
     res = service.skip_turn(
         game_id,
         1,

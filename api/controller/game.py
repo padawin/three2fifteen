@@ -5,18 +5,19 @@ from api.service.turn import TurnService
 
 
 class GameController(Controller):
-    def __init__(self, request, identity):
+    def __init__(self, config, request, identity):
         self.player = identity
+        self.config = config
 
     def get_status(self, game_id):
-        gs = GameService(GameModel)
+        gs = GameService(GameModel, self.config)
         game = gs.get(game_id)
         if game is None:
             return self.format_response({'message': "No game found"}), 404
         return self.format_response({"current_turn": game.turn})
 
     def get(self, game_id):
-        gs = GameService(GameModel)
+        gs = GameService(GameModel, self.config)
         game = gs.get(game_id)
         if game is None:
             return self.format_response({'message': "No game found"}), 404
@@ -39,7 +40,7 @@ class GameController(Controller):
             return self.format_response(
                 {'message': "number_players required"}
             ), 400
-        gs = GameService(GameModel)
+        gs = GameService(GameModel, self.config)
         res = gs.create(self.player['id_player'], self.player['username'], data['number_players'])
         players_count_message = "The number of players is invalid"
         body, status = self.create_response(res, {
@@ -49,7 +50,7 @@ class GameController(Controller):
         return self.format_response(body), status
 
     def put_add_player(self, game_id):
-        gs = GameService(GameModel)
+        gs = GameService(GameModel, self.config)
         res = gs.add_player(
             game_id, self.player["id_player"], self.player["username"]
         )
@@ -71,7 +72,7 @@ class GameController(Controller):
                 {'message': "token to exchange required"}
             ), 400
 
-        gs = TurnService(GameModel, TurnModel, GamePlayerModel)
+        gs = TurnService(GameModel, self.config)
         res = gs.skip_turn(
             game_id,
             self.player['id_player'],
@@ -109,7 +110,7 @@ class GameController(Controller):
                 {'message': "play required"}
             ), 400
 
-        gs = TurnService(GameModel)
+        gs = TurnService(GameModel, self.config)
         res = gs.turn(game_id, self.player['id_player'], data['play'], dry_run)
         if not res[0] and isinstance(res[1], str):
             return self.format_response({'message': res[1]}), 400
@@ -138,7 +139,7 @@ class GameController(Controller):
         return self.format_response(body), status
 
     def get_content(self, game_id):
-        ts = TurnService(GameModel)
+        ts = TurnService(GameModel, self.config)
         content = ts.get_game_content(game_id)
         if content is None:
             return self.format_response({'message': "No game found"}), 404
@@ -148,7 +149,7 @@ class GameController(Controller):
         )
 
     def get_hand(self, game_id):
-        gs = GameService(GameModel)
+        gs = GameService(GameModel, self.config)
         res = gs.get_player_hand(game_id, self.player['id_player'])
         body, status = self.create_response(res, {
             0: lambda hand: hand,
