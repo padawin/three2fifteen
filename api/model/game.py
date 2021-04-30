@@ -66,6 +66,13 @@ class GameModel:
         self.current_player = random.choice(list(self.players.keys()))
         self.players[self.current_player]["is_turn"] = True
         self.turn += 1
+        # deal hands (starting from first player or in order of players?)
+        b = bag.Bag()
+        for player_id in self.players:
+            self.fill_player_hand(player_id, b.fill_hand())
+
+    def fill_player_hand(self, player_id, hand):
+        self.players[player_id]["hand"] = hand
 
     def end(self):
         self.players[self.current_player]["points"] += self._sum_points_players_tokens()

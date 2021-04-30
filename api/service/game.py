@@ -1,6 +1,3 @@
-from api.game import bag
-
-
 class GameService(object):
     GAME_FULL = 1
     NO_GAME_FOUND = 2
@@ -61,13 +58,6 @@ class GameService(object):
         game.add_player(player_id, player_name)
 
         if len(game.players) == game.number_players:
-            self._start(game)
+            game.start()
 
         return (True, None)
-
-    def _start(self, game):
-        game.start()
-        # deal hands (starting from first player or in order of players?)
-        b = bag.Bag()
-        for player_id in game.players:
-            game.players[player_id]["hand"] = b.fill_hand()
