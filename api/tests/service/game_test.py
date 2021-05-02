@@ -1,9 +1,27 @@
 import pytest
+import os
+import shutil
 import uuid
 from unittest.mock import patch
 
 from api.service import game
 from api.model.game import GameModel, games
+import api.model.game as game_model
+
+games_storage_dir = "/tmp/three2fifteen-tests"
+config = {
+    "GAMES_STORAGE_DIR": games_storage_dir
+}
+
+
+def setup_module(module):
+    game_model.reset()
+    os.makedirs(games_storage_dir)
+
+
+def teardown_module(module):
+    game_model.reset()
+    shutil.rmtree(games_storage_dir)
 
 
 @patch.object(uuid, 'uuid1')
@@ -13,7 +31,7 @@ def test_create_game_ok(
     assert len(games) == 0
     game_id = '7fb8b876-a816-11e7-8b78-0469f8ed5e76'
     mock_uuid.return_value = game_id
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     res = service.create('123', 'somelogin42', 3)
     assert len(games) == 1
     assert games[game_id].id == game_id
@@ -26,21 +44,21 @@ def test_create_game_ok(
 
 
 def test_create_game_too_low_number_players():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     res = service.create('123', 'johndoe', 1)
     assert not res[0]
     assert res[1] == game.GameService.INVALID_NUMBER_PLAYERS
 
 
 def test_create_game_invalid_players_number_not_int():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     res = service.create('123', 'johndoe', 'aha')
     assert not res[0]
     assert res[1] == game.GameService.INVALID_NUMBER_PLAYERS
 
 
 def test_create_game_too_high_number_players():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     res = service.create('123', 'johndoe', 5)
     assert not res[0]
     assert res[1] == game.GameService.INVALID_NUMBER_PLAYERS
@@ -92,7 +110,7 @@ def test_add_player_game(
     result,
     code
 ):
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(players[0]["id"], players[0]["name"], size_game)
     for player in players[1:]:
         service.add_player(game_id, player["id"], player["name"])
@@ -102,7 +120,7 @@ def test_add_player_game(
 
 
 def test_add_player_twice():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     res = service.add_player(game_id, 1, "john")
     assert res[0] is False
@@ -110,7 +128,7 @@ def test_add_player_twice():
 
 
 def test_add_player_with_same_name_as_other_player():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     res = service.add_player(game_id, 2, "john")
     assert res[0] is False
@@ -118,13 +136,13 @@ def test_add_player_with_same_name_as_other_player():
 
 
 def test_add_player_no_game_found():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     res = service.add_player('123', 'john', 1)
     assert res == (False, game.GameService.NO_GAME_FOUND)
 
 
 def test_get_hand_no_game_found():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     service.add_player(game_id, 2, "doe")
     res = service.get_player_hand('1331', 1)
@@ -133,7 +151,7 @@ def test_get_hand_no_game_found():
 
 
 def test_get_hand_no_player_found():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     service.add_player(game_id, 2, "doe")
     res = service.get_player_hand(game_id, 4)
@@ -142,7 +160,7 @@ def test_get_hand_no_player_found():
 
 
 def test_get_hand():
-    service = game.GameService(GameModel)
+    service = game.GameService(GameModel, config)
     _, game_id = service.create(1, "john", 2)
     service.add_player(game_id, 2, "doe")
     res = service.get_player_hand(game_id, 2)
