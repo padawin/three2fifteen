@@ -1,45 +1,23 @@
 import pytest
-import os
-import shutil
-import uuid
 from unittest.mock import patch
 
 from api.service import game
-from api.model.game import GameModel, games
-import api.model.game as game_model
+from api.model.game import GameModel
 
-games_storage_dir = "/tmp/three2fifteen-tests"
-config = {
-    "GAMES_STORAGE_DIR": games_storage_dir
-}
+config = {}
 
 
-def setup_module(module):
-    game_model.reset()
-    os.makedirs(games_storage_dir)
-
-
-def teardown_module(module):
-    game_model.reset()
-    shutil.rmtree(games_storage_dir)
-
-
-@patch.object(uuid, 'uuid1')
-def test_create_game_ok(
-    mock_uuid
-):
-    assert len(games) == 0
+@patch.object(GameModel, "create")
+@patch.object(GameModel, "add_player")
+def test_create_game_ok(mock_addPlayer, mock_createGame):
     game_id = '7fb8b876-a816-11e7-8b78-0469f8ed5e76'
-    mock_uuid.return_value = game_id
+    g = GameModel(config)
+    g.id = game_id
+    mock_createGame.return_value = g
     service = game.GameService(GameModel, config)
     res = service.create('123', 'somelogin42', 3)
-    assert len(games) == 1
-    assert games[game_id].id == game_id
-    assert games[game_id].number_players == 3
-    assert games[game_id].players["123"]["id"] == "123"
-    assert games[game_id].players["123"]["name"] == "somelogin42"
-    assert games[game_id].current_player is None
-    assert games[game_id].played_tokens == []
+    assert mock_createGame.called
+    assert mock_addPlayer.called
     assert res == (True, game_id)
 
 
@@ -65,104 +43,150 @@ def test_create_game_too_high_number_players():
 
 
 @pytest.mark.parametrize(
-    "size_game, players, result, code",
+    "size_game, players, new_player_id, new_player_name, result, code, start_game",
     [
         [
             4,
-            [{"id": 1, "name": "pierre"}],
-            True, None
-        ],
-        [
-            4,
-            [
-                {"id": 1, "name": "pierre"},
-                {"id": 2, "name": "paul"}
-            ],
-            True, None
-        ],
-        [
-            3,
-            [
-                {"id": 1, "name": "pierre"},
-                {"id": 2, "name": "paul"},
-                {"id": 3, "name": "jack"}
-            ],
-            False, game.GameService.GAME_FULL
+            {1: {"id": 1, "name": "pierre"}},
+            4, "hal",
+            True, None, False
         ],
         [
             2,
-            [
-                {"id": 1, "name": "pierre"},
-                {"id": 2, "name": "paul"}
-            ],
-            False, game.GameService.GAME_FULL
+            {1: {"id": 1, "name": "pierre"}},
+            4, "hal",
+            True, None, True
+        ],
+        [
+            4,
+            {
+                1: {"id": 1, "name": "pierre"},
+                2: {"id": 2, "name": "paul"}
+            },
+            4, "hal",
+            True, None, False
+        ],
+        [
+            3,
+            {
+                1: {"id": 1, "name": "pierre"},
+                2: {"id": 2, "name": "paul"},
+                3: {"id": 3, "name": "jack"}
+            },
+            4, "hal",
+            False, game.GameService.GAME_FULL, False
+        ],
+        [
+            2,
+            {
+                1: {"id": 1, "name": "pierre"},
+                2: {"id": 2, "name": "paul"}
+            },
+            4, "hal",
+            False, game.GameService.GAME_FULL, False
+        ],
+        [
+            3,
+            {
+                1: {"id": 1, "name": "pierre"},
+                2: {"id": 2, "name": "paul"}
+            },
+            2, "paul",
+            False, game.GameService.PLAYER_ALREADY_IN_GAME, False
+        ],
+        [
+            3,
+            {
+                1: {"id": 1, "name": "pierre"},
+                2: {"id": 2, "name": "paul"}
+            },
+            3, "paul",
+            False, game.GameService.PLAYER_NAME_ALREADY_IN_GAME, False
         ]
     ],
     # valids
-    ids=["Add player 1",
-         "Add player 2",
-         "Add player 3",
-         "Add player full game less than 4"]
+    ids=[
+        "Add player 1",
+        "Add player 2 start game",
+        "Add player 2",
+        "Add player 3",
+        "Add player full game less than 4",
+        "Add player already in game",
+        "Add player name already in game"
+    ]
 )
+@patch.object(GameModel, "loadById")
+@patch.object(GameModel, "save")
+@patch.object(GameModel, "start")
 def test_add_player_game(
+    mock_start,
+    mock_save,
+    mock_loadById,
     size_game,
     players,
+    new_player_id,
+    new_player_name,
     result,
-    code
+    code,
+    start_game
 ):
+    game_id = '7fb8b876-a816-11e7-8b78-0469f8ed5e76'
+    g = GameModel(config)
+    g.id = game_id
+    g.players = players
+    g.number_players = size_game
+    mock_loadById.return_value = g
     service = game.GameService(GameModel, config)
-    _, game_id = service.create(players[0]["id"], players[0]["name"], size_game)
-    for player in players[1:]:
-        service.add_player(game_id, player["id"], player["name"])
-    res = service.add_player(game_id, 4, "hal")
+    res = service.add_player(game_id, new_player_id, new_player_name)
     assert res[0] == result
     assert res[1] == code
+    assert mock_start.called == start_game
 
 
-def test_add_player_twice():
-    service = game.GameService(GameModel, config)
-    _, game_id = service.create(1, "john", 2)
-    res = service.add_player(game_id, 1, "john")
-    assert res[0] is False
-    assert res[1] == game.GameService.PLAYER_ALREADY_IN_GAME
-
-
-def test_add_player_with_same_name_as_other_player():
-    service = game.GameService(GameModel, config)
-    _, game_id = service.create(1, "john", 2)
-    res = service.add_player(game_id, 2, "john")
-    assert res[0] is False
-    assert res[1] == game.GameService.PLAYER_NAME_ALREADY_IN_GAME
-
-
-def test_add_player_no_game_found():
+@patch.object(GameModel, "loadById")
+def test_add_player_no_game_found(mock_loadById):
+    mock_loadById.return_value = None
     service = game.GameService(GameModel, config)
     res = service.add_player('123', 'john', 1)
     assert res == (False, game.GameService.NO_GAME_FOUND)
 
 
-def test_get_hand_no_game_found():
+@patch.object(GameModel, "loadById")
+def test_get_hand_no_game_found(mock_loadById):
+    mock_loadById.return_value = None
     service = game.GameService(GameModel, config)
-    _, game_id = service.create(1, "john", 2)
-    service.add_player(game_id, 2, "doe")
     res = service.get_player_hand('1331', 1)
     assert not res[0]
     assert res[1] == game.GameService.NO_GAME_FOUND
 
 
-def test_get_hand_no_player_found():
+@patch.object(GameModel, "loadById")
+def test_get_hand_no_player_found(mock_loadById):
+    game_id = '7fb8b876-a816-11e7-8b78-0469f8ed5e76'
+    g = GameModel(config)
+    g.id = game_id
+    g.players = {
+        1: {"id": 1, "name": "pierre"},
+        2: {"id": 2, "name": "paul"}
+    }
+    mock_loadById.return_value = g
     service = game.GameService(GameModel, config)
-    _, game_id = service.create(1, "john", 2)
-    service.add_player(game_id, 2, "doe")
     res = service.get_player_hand(game_id, 4)
     assert not res[0]
     assert res[1] == game.GameService.UNKNOWN_PLAYER
 
 
-def test_get_hand():
+@patch.object(GameModel, "loadById")
+def test_get_hand(mock_loadById):
+    game_id = '7fb8b876-a816-11e7-8b78-0469f8ed5e76'
+    g = GameModel(config)
+    g.id = game_id
+    g.players = {
+        1: {"id": 1, "name": "pierre", "hand": [1, 2, 3]},
+        2: {"id": 2, "name": "paul", "hand": [12, 13, 14]}
+    }
+    mock_loadById.return_value = g
     service = game.GameService(GameModel, config)
-    _, game_id = service.create(1, "john", 2)
-    service.add_player(game_id, 2, "doe")
     res = service.get_player_hand(game_id, 2)
     assert res[0] is True
-    assert len(res[1]) == 3
+    assert res[1] == [12, 13, 14]
