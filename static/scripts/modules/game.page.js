@@ -188,11 +188,17 @@ loader.executeModule('gamePageModule',
 	// This is used as a fallback when WebSocket do not work.
 	let gameStatus = null;
 	let observeGameChanges = function() {
+		let isPolling = false;
 		setInterval(function() {
+			if (isPolling) {
+				return;
+			}
+			isPolling = true;
 			request.get(
 				config.api_host + utils.format(config.api_get_game_status, [gameId]),
 				auth.getHeader(),
 				(response_status, response) => {
+					isPolling = false;
 					if (response_status != 200) {
 						return;
 					}
