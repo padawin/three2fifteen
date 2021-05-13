@@ -65,7 +65,9 @@ loader.executeModule('gamePageModule',
 			if (!dryRun) {
 				// fetch data back
 				_refresh();
-				Socket.message({'type': 'play'});
+				if (config.use_socket) {
+					Socket.message({'type': 'play'});
+				}
 			}
 		}).catch((message) => {
 			_postMove(false, message, false);
