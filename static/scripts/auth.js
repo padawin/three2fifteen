@@ -9,6 +9,8 @@ loader.addModule('auth',
 			return window.localStorage.getItem(TOKEN_KEY);
 		},
 		'unsetToken': () => {
+			console.log("unset token");
+			throw "Shouldn't be here!";
 			window.localStorage.removeItem(TOKEN_KEY);
 		},
 		'isLoggedIn': () => {
