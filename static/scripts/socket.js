@@ -27,7 +27,7 @@ loader.addModule('Socket', 'config', (config) => {
 		};
 
 		module.message = function(data) {
-			if (socket.readyState == 0) {
+			if (socket.readyState == 1) {
 				socket.send(JSON.stringify(data));
 			}
 		}
