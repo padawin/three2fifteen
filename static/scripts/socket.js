@@ -6,11 +6,10 @@ loader.addModule('Socket', 'config', (config) => {
 		setTimeout(function() {
 			if (socket.readyState === 1) {
 				console.log("Connection is made")
+			} else if (socket.readyState == 3) {
 				if (callback != null){
 					callback();
 				}
-			} else if (socket.readyState == 3) {
-				callback();
 			} else {
 				console.log("wait for connection...")
 				waitForSocketConnection(socket, callback);
