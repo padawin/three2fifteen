@@ -2,22 +2,20 @@ loader.addModule('Socket', 'config', (config) => {
 	var socket = null;
 	let module = {};
 
-	let waitForSocketConnection = function(socket, callback){
+	let waitForSocketConnection = function(socket){
 		setTimeout(function() {
 			if (socket.readyState === 1) {
 				console.log("Connection is made")
 			} else if (socket.readyState == 3) {
-				if (callback != null){
-					callback();
-				}
+				console.log("Connection closed...")
 			} else {
 				console.log("wait for connection...")
-				waitForSocketConnection(socket, callback);
+				waitForSocketConnection(socket);
 			}
 		}, 5);
 	}
 
-	module.join = (onMessageHooks, gameId, failCallback) => {
+	module.join = (onMessageHooks, gameId) => {
 		const protocol = location.protocol == "https:" ? "wss:" : "ws:";
 		socket = new WebSocket(
 			protocol + "//" + location.hostname + ":" + location.port + "/websocket/"
@@ -44,7 +42,7 @@ loader.addModule('Socket', 'config', (config) => {
 			onMessageHooks[data.type](data);
 		};
 
-		waitForSocketConnection(socket, failCallback);
+		waitForSocketConnection(socket);
 	};
 
 	return module;

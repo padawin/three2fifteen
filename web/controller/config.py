@@ -15,4 +15,5 @@ class ConfigController(object):
             'api_get_hand': current_app.config['API_GET_HAND'],
             'api_turn_check': current_app.config['API_TURN_CHECK'],
             'api_turn': current_app.config['API_TURN'],
+            'use_socket': current_app.config['USE_SOCKET'],
         }
