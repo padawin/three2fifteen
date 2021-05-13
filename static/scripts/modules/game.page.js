@@ -233,14 +233,20 @@ loader.executeModule('gamePageModule',
 				winner_token: {html: B.$id('winner-token').innerHTML}
 			});
 
-			Socket.join(
-				{
-					'player-played': _refresh,
-					'player-joined': _refresh,
-				},
-				gameId,
-				observeGameChanges
-			);
+			if (config.use_socket) {
+				console.log("Use WebSocket");
+				Socket.join(
+					{
+						'player-played': _refresh,
+						'player-joined': _refresh,
+					},
+					gameId
+				);
+			}
+			else {
+				console.log("Use Periodic polling");
+				observeGameChanges();
+			}
 			// Render page
 			_render();
 		}
