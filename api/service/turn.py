@@ -39,6 +39,7 @@ class TurnService(object):
         elif game.date_finished is not None:
             return (False, TurnService.GAME_FINISHED)
 
+        # TODO remove player.is_turn
         current_player = game.players[player_id]
         if not current_player["is_turn"]:
             return (False, TurnService.WRONG_TURN_PLAYER)

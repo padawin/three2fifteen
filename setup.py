@@ -17,7 +17,8 @@ setup(name='three2fifteen',
           'flask',
           'pyjwt',
           'tornado==5.1',
-          'requests'
+          'requests',
+          'mysql-connector-python==8.0.24'
       ],
       entry_points={
           'console_scripts': [

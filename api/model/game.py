@@ -1,49 +1,19 @@
 import uuid
-import logging
-import os
+import json
 import random
-from os import path
+import mysql.connector
 from datetime import datetime
-import pickle
 
 from api.game import bag
 
-games = dict()
 
-
-def reset():
-    games.clear()
-
-
-def loadFromFile(gameID, config):
-    games_directory = config["GAMES_STORAGE_DIR"]
-    try:
-        with open(path.join(games_directory, gameID), 'rb') as f:
-            dumped = f.read()
-    except FileNotFoundError:
-        return None
-    else:
-        try:
-            return pickle.loads(dumped)
-        except pickle.UnpicklingError as e:
-            logging.getLogger(__name__).error(e)
-            return None
-
-
-def saveToFile(game):
-    games_directory = game.config["GAMES_STORAGE_DIR"]
-    if not os.path.isdir(games_directory):
-        os.makedirs(games_directory)
-    with open(path.join(games_directory, game.id), 'wb') as f:
-        f.write(pickle.dumps(game))
-
-
-def deleteGameFile(game):
-    games_directory = game.config["GAMES_STORAGE_DIR"]
-    try:
-        os.unlink(path.join(games_directory, game.id))
-    except FileNotFoundError:
-        pass
+def connect(config):
+    return mysql.connector.connect(
+        host=config["DB_HOST"],
+        user=config["DB_USER"],
+        password=config["DB_PASSWORD"],
+        database=config["DB_NAME"]
+    )
 
 
 class GameModel:
@@ -85,18 +55,46 @@ class GameModel:
         game = cls(config)
         game.id = str(uuid.uuid1())
         game.number_players = number_players
-        games[game.id] = game
+        game.inserted = False
         game.save()
         return game
 
     @classmethod
     def loadById(cls, id, config):
-        game = games.get(id)
-        if game is None:
-            game = loadFromFile(id, config)
-            games[id] = game
-        if game is not None:
-            game.config = config
+        db = connect(config)
+        cursor = db.cursor()
+        sql = """
+            SELECT
+                number_players,
+                players,
+                current_player,
+                played_tokens,
+                turn,
+                date_created,
+                date_started,
+                date_finished
+            FROM
+                game
+            WHERE
+                id = %s
+        """
+
+        cursor.execute(sql, (id,))
+
+        result = cursor.fetchone()
+        if result is None:
+            return None
+        game = cls(config)
+        game.id = id
+        game.inserted = True
+        game.number_players = result[0]
+        game.players = json.loads(result[1])
+        game.current_player = result[2]
+        game.played_tokens = json.loads(result[3])
+        game.turn = result[4]
+        game.date_created = result[5]
+        game.date_started = result[6]
+        game.date_finished = result[7]
         return game
 
     def add_player(self, player_id, player_name):
@@ -127,7 +125,7 @@ class GameModel:
     def end(self):
         self.players[self.current_player]["points"] += self._sum_points_players_tokens()
         self.date_finished = datetime.now()
-        self.delete()
+        self.save()
 
     def _sum_points_players_tokens(self):
         score = 0
@@ -153,7 +151,53 @@ class GameModel:
         self.save()
 
     def save(self):
-        saveToFile(self)
+        db = connect(self.config)
+        cursor = db.cursor()
+        if not self.inserted:
+            sql = """
+                INSERT INTO
+                    game (
+                        number_players,
+                        players,
+                        current_player,
+                        played_tokens,
+                        turn,
+                        id
+                    ) VALUES (%s, %s, %s, %s, %s, %s)
+                """
+            val = (
+                self.number_players,
+                json.dumps(self.players),
+                self.current_player,
+                json.dumps(self.played_tokens),
+                self.turn,
+                self.id
+            )
+        else:
+            sql = """
+                UPDATE
+                    game
+                SET
+                    players = %s,
+                    current_player = %s,
+                    played_tokens = %s,
+                    turn = %s,
+                    date_started = %s,
+                    date_finished = %s
+                WHERE
+                    id = %s
+                """
+            val = (
+                json.dumps(self.players),
+                self.current_player,
+                json.dumps(self.played_tokens),
+                self.turn,
+                self.date_started,
+                self.date_finished,
+                self.id
+            )
 
-    def delete(self):
-        deleteGameFile(self)
+        cursor.execute(sql, val)
+
+        db.commit()
+        self.inserted = True
