@@ -90,13 +90,13 @@ body {
   #game-controls {
     height: 126px; } }
 .token {
-  width: 32px;
-  height: 32px;
+  width: 4.4vh;
+  height: 4.4vh;
   color: white;
   background-color: #009688;
   border-radius: 2px;
   text-align: center;
-  line-height: 32px;
+  line-height: 4.4vh;
   font-size: 21px;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.24);
   z-index: 1;
@@ -116,8 +116,9 @@ body {
   margin: 1rem auto 0px; }
 
 #board {
+  max-height: 100vh;
+  max-width: 100vw;
   list-style: none;
-  width: 540px;
   padding: 0px;
   margin: 0 auto; }
   #board::after {
@@ -134,8 +135,8 @@ body {
     display: inline-block;
     position: relative;
     margin: 0 2px;
-    width: 32px;
-    height: 32px; }
+    width: 4.4vh;
+    height: 4.4vh; }
 
 .game-info {
   height: 2rem;
@@ -157,18 +158,18 @@ body {
   float: left;
   border-radius: 2px;
   margin: 2px;
-  width: 32px;
-  height: 32px;
+  width: 4.4vh;
+  height: 4.4vh;
   text-align: center;
-  line-height: 32px;
+  line-height: 4.4vh;
   position: relative; }
 
 .cell.hovered {
   background-color: #EF5350 !important; }
 
 .cell::after {
-  width: 32px;
-  height: 32px;
+  width: 4.4vh;
+  height: 4.4vh;
   position: absolute;
   left: 0;
   top: 0; }
