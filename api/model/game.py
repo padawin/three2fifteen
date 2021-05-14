@@ -146,6 +146,9 @@ class GameModel:
 
     def do_turn(self, player_id, play, score_play):
         self.players[player_id]["points"] += score_play
+        for token in play:
+            self.players[player_id]["hand"].remove(token['value'])
+
         self.played_tokens.extend(play)
         self.turn += 1
         self.save()

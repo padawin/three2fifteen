@@ -75,9 +75,6 @@ class TurnService(object):
         score_play = score.calculate_score(current_board, play, play_result)
         if not dry_run:
             game.do_turn(player_id, play, score_play)
-            for token in play:
-                current_player['hand'].remove(token['value'])
-
             # refill player's hand
             b = self._get_bag(game.players, game.played_tokens)
             hand = b.fill_hand(current_player['hand'])
