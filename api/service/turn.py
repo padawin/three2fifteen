@@ -82,7 +82,7 @@ class TurnService(object):
             b = self._get_bag(game.players, game.played_tokens)
             hand = b.fill_hand(current_player['hand'])
 
-            game.fill_player_hand(player_id, hand)
+            game.set_player_hand(player_id, hand)
             if len(hand) == 0 and b.is_empty():
                 # end of the game
                 game.end()
@@ -112,6 +112,6 @@ class TurnService(object):
             if not b.is_empty():
                 current_player['hand'].remove(token_to_exchange)
                 hand = b.fill_hand(current_player['hand'])
-                game.fill_player_hand(player_id, hand)
+                game.set_player_hand(player_id, hand)
             game.set_next_player()
         return (True, {})

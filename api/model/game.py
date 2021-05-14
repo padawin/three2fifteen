@@ -116,10 +116,10 @@ class GameModel:
         # deal hands (starting from first player or in order of players?)
         b = bag.Bag()
         for player_id in self.players:
-            self.fill_player_hand(player_id, b.fill_hand())
+            self.set_player_hand(player_id, b.fill_hand())
         self.save()
 
-    def fill_player_hand(self, player_id, hand):
+    def set_player_hand(self, player_id, hand):
         self.players[player_id]["hand"] = hand
 
     def end(self):
