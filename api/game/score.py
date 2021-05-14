@@ -38,7 +38,6 @@ def calculate_score(board_instance, play, play_analyse):
         else:
             # otherwise, just multiply the current token
             total += token['value'] * multiplier
-        break
 
     if len(play) == 3:
         total += 50
