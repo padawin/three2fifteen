@@ -54,6 +54,8 @@ class TurnService(object):
 
         # test play is in player's hand
         player_hand = current_player['hand'].copy()
+        if not isinstance(play, list):
+            return (False, TurnService.INVALID_PLAY_TOKEN)
         for token in play:
             if not isinstance(token, dict):
                 return (False, TurnService.INVALID_PLAY_TOKEN)

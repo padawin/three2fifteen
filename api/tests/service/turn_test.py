@@ -13,6 +13,7 @@ config = {}
 @pytest.mark.parametrize(
     "player_id, player_hand, play, result",
     [
+        (1, [1, 2, 3], "foo", turn.TurnService.INVALID_PLAY_TOKEN),
         (1, [1, 2, 3], ["foo"], turn.TurnService.INVALID_PLAY_TOKEN),
         (1, [1, 2, 3], [{'x': 8, 'toto': 7, 'value': 4}], turn.TurnService.INVALID_PLAY_TYPE),
         (2, [1, 2, 3], [{'x': 7, 'y': 7, 'value': 10}, {'x': 8, 'y': 7, 'value': 4}], turn.TurnService.WRONG_TURN_PLAYER),
@@ -22,6 +23,7 @@ config = {}
         (1, [1, 1, 1], [{'x': 1, 'y': 1, 'value': 1}, {'x': 1, 'y': 1, 'value': 2}], turn.TurnService.INVALID_PLAY_CONTENT)
     ],
     ids=[
+        "Invalid play: play not a list",
         "Invalid play: token not a dict",
         "Invalid play: invalid token fields",
         "Invalid play: Wrong turn player",
