@@ -1,11 +1,9 @@
 import json
 
+
 class Controller(object):
     def format_response(self, response):
-        if isinstance(response, str):
-            return response
-        elif isinstance(response, dict) or isinstance(response, list):
-            return json.dumps(response)
+        return json.dumps(response)
 
     def create_response(self, service_result, cases):
         # no cases can be considered as fine
