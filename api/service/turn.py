@@ -85,6 +85,7 @@ class TurnService(object):
                 game.end()
             elif not any(current_board.is_bis(p['x'], p['y']) for p in play):
                 game.set_next_player()
+            game.save()
 
         return (True, score_play)
 
@@ -111,4 +112,5 @@ class TurnService(object):
                 hand = b.fill_hand(current_player['hand'])
                 game.set_player_hand(player_id, hand)
             game.set_next_player()
+            game.save()
         return (True, {})

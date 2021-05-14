@@ -1,4 +1,5 @@
 import pytest
+import uuid
 from unittest.mock import patch
 
 from api.service import game
@@ -7,16 +8,15 @@ from api.model.game import GameModel
 config = {}
 
 
-@patch.object(GameModel, "create")
+@patch.object(uuid, "uuid1")
+@patch.object(GameModel, "save")
 @patch.object(GameModel, "add_player")
-def test_create_game_ok(mock_addPlayer, mock_createGame):
+def test_create_game_ok(mock_addPlayer, mock_save, mock_uuid):
     game_id = '7fb8b876-a816-11e7-8b78-0469f8ed5e76'
-    g = GameModel(config)
-    g.id = game_id
-    mock_createGame.return_value = g
+    mock_uuid.return_value = game_id
     service = game.GameService(GameModel, config)
     res = service.create('123', 'somelogin42', 3)
-    assert mock_createGame.called
+    assert mock_save.called
     assert mock_addPlayer.called
     assert res == (True, game_id)
 

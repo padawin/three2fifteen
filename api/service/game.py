@@ -35,6 +35,7 @@ class GameService(object):
 
         game = self.game_model.create(number_players, self.config)
         game.add_player(player_id, player_name)
+        game.save()
         return (True, game.id)
 
     def add_player(self, game_id, player_id, player_name):
@@ -60,5 +61,7 @@ class GameService(object):
 
         if len(game.players) == game.number_players:
             game.start()
+
+        game.save()
 
         return (True, None)
