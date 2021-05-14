@@ -1,11 +1,11 @@
 .token {
-  width: 32px;
-  height: 32px;
+  width: $cell-size;
+  height: $cell-size;
   color: white;
   background-color: $secondary-color;
   border-radius: 2px;
   text-align: center;
-  line-height: 32px;
+  line-height: $cell-size;
   font-size: 21px;
   text-shadow: 1px 1px 1px rgba(0,0,0,.24);
   z-index: 1;
@@ -27,7 +27,6 @@
 
 #game-play-section{
   #board-wrapper{
-    overflow: scroll;
     margin: 1rem auto 0px;
   }
   #board {
@@ -45,7 +44,7 @@
   #player-hand {
     clear: both;
     text-align: center;
-    height: 32px;
+    height: $cell-size;
     margin: .5rem auto .5rem;
     width: 100%;
     // background: $light-yellow;
@@ -54,8 +53,8 @@
       display: inline-block;
       position: relative;
       margin: 0 2px;
-      width: 32px;
-      height: 32px;
+      width: $cell-size;
+      height: $cell-size;
     }
   }
 
@@ -86,10 +85,10 @@
   float: left;
   border-radius: 2px;
   margin: 2px;
-  width: 32px;
-  height: 32px;
+  width: $cell-size;
+  height: $cell-size;
   text-align: center;
-  line-height: 32px;
+  line-height: $cell-size;
   position: relative;
 }
 
@@ -98,8 +97,8 @@
 }
 
 .cell::after {
-  width: 32px;
-  height: 32px;
+  width: $cell-size;
+  height: $cell-size;
   position: absolute;
   left: 0;
   top: 0;
