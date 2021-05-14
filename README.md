@@ -29,9 +29,8 @@ Install ``requirements_dev.txt``, then run:
 
 ## Database
 
-	docker pull mysql/mysql-server:latest
-	docker run  --name=mysql1 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456  mysql/mysql-server:latest
-	docker exec -it mysql1 mysql -uroot -p
+	docker-compose up
+	docker exec -it db-three2fifteen mysql -u user -p
 
-	> create database three2Fifteen
-	> use three2Fifteen
+	> create database three2Fifteen;
+	> use three2Fifteen;
