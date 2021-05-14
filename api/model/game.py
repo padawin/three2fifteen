@@ -56,7 +56,6 @@ class GameModel:
         game.id = str(uuid.uuid1())
         game.number_players = number_players
         game.inserted = False
-        game.save()
         return game
 
     @classmethod
@@ -106,7 +105,6 @@ class GameModel:
             'is_game_creator': len(self.players) == 0,
             'points': 0
         }
-        self.save()
 
     def start(self):
         self.date_started = datetime.now()
@@ -116,16 +114,14 @@ class GameModel:
         # deal hands (starting from first player or in order of players?)
         b = bag.Bag()
         for player_id in self.players:
-            self.fill_player_hand(player_id, b.fill_hand())
-        self.save()
+            self.set_player_hand(player_id, b.fill_hand())
 
-    def fill_player_hand(self, player_id, hand):
+    def set_player_hand(self, player_id, hand):
         self.players[player_id]["hand"] = hand
 
     def end(self):
         self.players[self.current_player]["points"] += self._sum_points_players_tokens()
         self.date_finished = datetime.now()
-        self.save()
 
     def _sum_points_players_tokens(self):
         score = 0
@@ -142,13 +138,14 @@ class GameModel:
         next_player_id = player_ids[(current_player_index + 1) % len(player_ids)]
         self.players[next_player_id]["is_turn"] = True
         self.current_player = next_player_id
-        self.save()
 
     def do_turn(self, player_id, play, score_play):
         self.players[player_id]["points"] += score_play
+        for token in play:
+            self.players[player_id]["hand"].remove(token['value'])
+
         self.played_tokens.extend(play)
         self.turn += 1
-        self.save()
 
     def save(self):
         db = connect(self.config)

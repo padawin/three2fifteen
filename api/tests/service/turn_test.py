@@ -11,23 +11,35 @@ config = {}
 
 
 @pytest.mark.parametrize(
-    "play, result",
+    "player_id, player_hand, play, result",
     [
-        ("foo", turn.TurnService.INVALID_PLAY_TOKEN),
-        ({'x': 8, 'toto': 7, 'value': 4}, turn.TurnService.INVALID_PLAY_TYPE),
+        (1, [1, 2, 3], "foo", turn.TurnService.INVALID_PLAY_TOKEN),
+        (1, [1, 2, 3], ["foo"], turn.TurnService.INVALID_PLAY_TOKEN),
+        (1, [1, 2, 3], [{'x': 8, 'toto': 7, 'value': 4}], turn.TurnService.INVALID_PLAY_TYPE),
+        (2, [1, 2, 3], [{'x': 7, 'y': 7, 'value': 10}, {'x': 8, 'y': 7, 'value': 4}], turn.TurnService.WRONG_TURN_PLAYER),
+
+        (1, [1, 2, 3], [{'x': 1, 'y': 1, 'value': 4}, {'x': 1, 'y': 1, 'value': 5}], turn.TurnService.INVALID_PLAY_CONTENT),
+        (1, [1, 2, 4], [{'x': 1, 'y': 1, 'value': 1}, {'x': 1, 'y': 1, 'value': 1}], turn.TurnService.INVALID_PLAY_CONTENT),
+        (1, [1, 1, 1], [{'x': 1, 'y': 1, 'value': 1}, {'x': 1, 'y': 1, 'value': 2}], turn.TurnService.INVALID_PLAY_CONTENT)
     ],
     ids=[
-        "Invalid play token",
-        "Invalid play type"
+        "Invalid play: play not a list",
+        "Invalid play: token not a dict",
+        "Invalid play: invalid token fields",
+        "Invalid play: Wrong turn player",
+
+        "Invalid play: Play different than hand",
+        "Invalid play: Duplicate valid value",
+        "Invalid play: Play partly different than hand"
     ]
 )
 @patch.object(GameModel, "loadById")
-def test_invalid_play_type(mock_loadById, play, result):
+def test_invalid_play(mock_loadById, player_id, player_hand, play, result):
     game_id = '7fb8b876-a816-11e7-8b78-0469f8ed5e76'
     g = GameModel(config)
     g.id = game_id
     g.players = {
-        1: {"id": 1, "name": "pierre", "hand": [1, 2, 3], "is_turn": True},
+        1: {"id": 1, "name": "pierre", "hand": player_hand, "is_turn": True},
         2: {"id": 2, "name": "paul", "hand": [12, 13, 14], "is_turn": False}
     }
     g.number_players = 2
@@ -35,68 +47,8 @@ def test_invalid_play_type(mock_loadById, play, result):
     g.date_started = datetime.now()
     mock_loadById.return_value = g
     service = turn.TurnService(GameModel, config)
-    res = service.turn(game_id, 1, [play], dry_run=False)
+    res = service.turn(game_id, player_id, play, dry_run=False)
     assert res == (False, result)
-
-
-@patch.object(GameModel, "loadById")
-def test_wrong_turn_player(mock_loadById):
-    game_id = '7fb8b876-a816-11e7-8b78-0469f8ed5e76'
-    g = GameModel(config)
-    g.id = game_id
-    g.players = {
-        1: {"id": 1, "name": "pierre", "hand": [1, 2, 3], "is_turn": True},
-        2: {"id": 2, "name": "paul", "hand": [12, 13, 14], "is_turn": False}
-    }
-    g.number_players = 2
-    g.current_player = 1
-    g.date_started = datetime.now()
-    mock_loadById.return_value = g
-    service = turn.TurnService(GameModel, config)
-    res = service.turn(
-        game_id,
-        2,
-        [
-            {'x': 7, 'y': 7, 'value': 10},
-            {'x': 8, 'y': 7, 'value': 4}
-        ],
-        dry_run=False
-    )
-    assert res == (False, turn.TurnService.WRONG_TURN_PLAYER)
-
-
-@pytest.mark.parametrize(
-    "hand, play",
-    [
-        [[1, 2, 3], [{'x': 1, 'y': 1, 'value': 4}, {'x': 1, 'y': 1, 'value': 5}]],
-        [[1, 2, 4], [{'x': 1, 'y': 1, 'value': 1}, {'x': 1, 'y': 1, 'value': 1}]],
-        [[1, 1, 1], [{'x': 1, 'y': 1, 'value': 1}, {'x': 1, 'y': 1, 'value': 2}]]
-    ],
-    ids=["Play different than hand",
-         "Duplicate valid value",
-         "Partly different"]
-)
-@patch.object(GameModel, "loadById")
-def test_play_not_in_hand(mock_loadById, hand, play):
-    game_id = '7fb8b876-a816-11e7-8b78-0469f8ed5e76'
-    g = GameModel(config)
-    g.id = game_id
-    g.players = {
-        1: {"id": 1, "name": "pierre", "hand": hand, "is_turn": True},
-        2: {"id": 2, "name": "paul", "hand": [12, 13, 14], "is_turn": False}
-    }
-    g.number_players = 2
-    g.current_player = 1
-    g.date_started = datetime.now()
-    mock_loadById.return_value = g
-    service = turn.TurnService(GameModel, config)
-    res = service.turn(
-        game_id,
-        1,
-        play,
-        dry_run=False
-    )
-    assert res == (False, turn.TurnService.INVALID_PLAY_CONTENT)
 
 
 @patch.object(GameModel, "loadById")

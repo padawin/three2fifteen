@@ -54,6 +54,8 @@ class TurnService(object):
 
         # test play is in player's hand
         player_hand = current_player['hand'].copy()
+        if not isinstance(play, list):
+            return (False, TurnService.INVALID_PLAY_TOKEN)
         for token in play:
             if not isinstance(token, dict):
                 return (False, TurnService.INVALID_PLAY_TOKEN)
@@ -75,19 +77,17 @@ class TurnService(object):
         score_play = score.calculate_score(current_board, play, play_result)
         if not dry_run:
             game.do_turn(player_id, play, score_play)
-            for token in play:
-                current_player['hand'].remove(token['value'])
-
             # refill player's hand
             b = self._get_bag(game.players, game.played_tokens)
             hand = b.fill_hand(current_player['hand'])
 
-            game.fill_player_hand(player_id, hand)
+            game.set_player_hand(player_id, hand)
             if len(hand) == 0 and b.is_empty():
                 # end of the game
                 game.end()
             elif not any(current_board.is_bis(p['x'], p['y']) for p in play):
                 game.set_next_player()
+            game.save()
 
         return (True, score_play)
 
@@ -112,6 +112,7 @@ class TurnService(object):
             if not b.is_empty():
                 current_player['hand'].remove(token_to_exchange)
                 hand = b.fill_hand(current_player['hand'])
-                game.fill_player_hand(player_id, hand)
+                game.set_player_hand(player_id, hand)
             game.set_next_player()
+            game.save()
         return (True, {})
