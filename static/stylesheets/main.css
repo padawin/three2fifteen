@@ -89,7 +89,6 @@ h5 {
   border: 1px solid #eeeeee; }
 
 #game-play-section #board-wrapper {
-  overflow: scroll;
   margin: 1rem auto 0px; }
 #game-play-section #board {
   list-style: none;
