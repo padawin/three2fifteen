@@ -105,84 +105,34 @@
   top: 0;
 }
 
-.cell[data-x='7'][data-y='0'],
-.cell[data-x='7'][data-y='14'],
-.cell[data-x='0'][data-y='7'],
-.cell[data-x='14'][data-y='7'],
-.cell[data-x='1'][data-y='1'],
-.cell[data-x='13'][data-y='1'],
-.cell[data-x='1'][data-y='13'],
-.cell[data-x='13'][data-y='13']{
+.cell-bis {
   background-color: $light-purple;
 }
 
-.cell[data-x='7'][data-y='0']::after,
-.cell[data-x='7'][data-y='14']::after,
-.cell[data-x='0'][data-y='7']::after,
-.cell[data-x='14'][data-y='7']::after,
-.cell[data-x='1'][data-y='1']::after,
-.cell[data-x='13'][data-y='1']::after,
-.cell[data-x='1'][data-y='13']::after,
-.cell[data-x='13'][data-y='13']::after {
-  font-family: 'Material Icons';
-  content: '\e042';
-}
-
-
-
-
-.cell[data-x='4'][data-y='1'],
-.cell[data-x='10'][data-y='1'],
-.cell[data-x='4'][data-y='13'],
-.cell[data-x='10'][data-y='13'],
-.cell[data-x='1'][data-y='4'],
-.cell[data-x='1'][data-y='10'],
-.cell[data-x='13'][data-y='4'],
-.cell[data-x='13'][data-y='10'] {
+.cell.cell-triple {
   background-color: $light-blue;
 }
 
-// .cell[data-x='7'][data-y='7']::after,
-.cell[data-x='4'][data-y='1']::after,
-.cell[data-x='10'][data-y='1']::after,
-.cell[data-x='4'][data-y='13']::after,
-.cell[data-x='10'][data-y='13']::after,
-.cell[data-x='1'][data-y='4']::after,
-.cell[data-x='1'][data-y='10']::after,
-.cell[data-x='13'][data-y='4']::after,
-.cell[data-x='13'][data-y='10']::after {
+.cell.cell-triple::after {
   content: 'x3';
 }
 
-.cell[data-x='7'][data-y='7']{
+.cell.cell-double {
   background-color: $light-red;
 }
 
-.cell[data-x='7'][data-y='7']::after {
-  font-family: 'Material Icons';
-  content: '\e838';
-}
-
-.cell[data-x='7'][data-y='3'],
-.cell[data-x='4'][data-y='4'],
-.cell[data-x='10'][data-y='4'],
-.cell[data-x='4'][data-y='10'],
-.cell[data-x='10'][data-y='10'],
-.cell[data-x='3'][data-y='7'],
-.cell[data-x='11'][data-y='7'],
-.cell[data-x='7'][data-y='11'] {
-  background-color: $light-red;
-}
-
-.cell[data-x='7'][data-y='3']::after,
-.cell[data-x='4'][data-y='4']::after,
-.cell[data-x='10'][data-y='4']::after,
-.cell[data-x='4'][data-y='10']::after,
-.cell[data-x='10'][data-y='10']::after,
-.cell[data-x='3'][data-y='7']::after,
-.cell[data-x='11'][data-y='7']::after,
-.cell[data-x='7'][data-y='11']::after {
+.cell.cell-double::after {
   content: 'x2'
+}
+
+.cell.cell-bis::after {
+  font-family: 'Material Icons';
+  content: '\e042' !important;
+}
+
+.cell.cell-start::after {
+  font-family: 'Material Icons';
+  content: '\e838' !important;
 }
 
 

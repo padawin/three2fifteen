@@ -48,7 +48,7 @@
 	</script>
 
 	<script type="template" id="board-cell">
-		<li class="cell cell-[[cell.type]]" data-x="[[cell.x]]" data-y="[[cell.y]]">
+		<li class="cell cell-[[cell.multiplier]] cell-[[cell.effect]]" data-x="[[cell.x]]" data-y="[[cell.y]]">
 			[[if cell.token then board_token with cell]]
 		</li>
 	</script>

@@ -781,13 +781,13 @@ def test_analyse_placement(board_content, x, y, token_value, valid):
         [
             [],
             [{'x': 14, 'y': 11, 'value': 1}],
-            None, 0, [], False, rules.INVALID_MUST_TURN_MUST_BE_CENTER
+            None, 0, [], False, rules.INVALID_MUST_TURN_MUST_BE_START
         ],
         # 2 Token first turn not center
         [
             [],
             [{'x': 0, 'y': 0, 'value': 1}, {'x': 0, 'y': 1, 'value': 1}],
-            None, 0, [], False, rules.INVALID_MUST_TURN_MUST_BE_CENTER
+            None, 0, [], False, rules.INVALID_MUST_TURN_MUST_BE_START
         ],
         # 3 Token first turn not center
         [
@@ -797,7 +797,7 @@ def test_analyse_placement(board_content, x, y, token_value, valid):
                 {'x': 12, 'y': 2, 'value': 1},
                 {'x': 10, 'y': 2, 'value': 13}
             ],
-            None, 0, [], False, rules.INVALID_MUST_TURN_MUST_BE_CENTER
+            None, 0, [], False, rules.INVALID_MUST_TURN_MUST_BE_START
         ],
 
         # 4 Tokens aligned
