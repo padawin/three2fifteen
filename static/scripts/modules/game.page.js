@@ -205,8 +205,8 @@ loader.executeModule('gamePageModule',
 						return;
 					}
 
-					if (gameStatus !== response.current_turn) {
-						gameStatus = response.current_turn;
+					if (gameStatus !== response) {
+						gameStatus = response;
 						_refresh();
 					}
 				}
