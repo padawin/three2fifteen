@@ -1,10 +1,11 @@
-from os import path
-
-
 class Config(object):
     # API Conf
     APP_NAME = 'Three2Fifteen'
     SECRET_KEY = 'secretjwtkey'
+    DB_HOST = 'prod-db-host'
+    DB_USER = 'prod-db-user'
+    DB_PASSWORD = 'prod-db-password'
+    DB_NAME = 'prod-db-name'
 
     # Web Conf
     API_HOST = 'https://production-host.web'
@@ -18,8 +19,14 @@ class Config(object):
     API_CREATE_GAME = '/api/game'
     API_JOIN_GAME = '/api/game/%s/join'
     API_TURN = '/api/game/%s/turn'
-    GAMES_STORAGE_DIR = path.join(path.dirname(__file__), "data", "games")
+
+    USE_SOCKET = True # If False, uses periodic polling for game state
 
 
 class DevConfig(Config):
     API_HOST = 'http://localhost:5000'
+    # Usable values for docker setup
+    DB_HOST = '127.0.0.1'
+    DB_USER = 'user'
+    DB_PASSWORD = 'password'
+    DB_NAME = 'three2fifteen'

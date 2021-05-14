@@ -1,0 +1,12 @@
+version: '3'
+services:
+  db:
+    image: mariadb
+    container_name: db-three2fifteen
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: three2fifteen
