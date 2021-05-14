@@ -61,7 +61,7 @@ def test_get_board():
         {'x': 1, 'y': 7, 'effect': 'simple', 'multiplier': 'simple'}, {'x': 2, 'y': 7, 'effect': 'simple', 'multiplier': 'simple'},
         {'x': 3, 'y': 7, 'effect': 'simple', 'multiplier': 'double'}, {'x': 4, 'y': 7, 'effect': 'simple', 'multiplier': 'simple'},
         {'x': 5, 'y': 7, 'effect': 'simple', 'multiplier': 'simple'}, {'x': 6, 'y': 7, 'effect': 'simple', 'multiplier': 'simple'},
-        {'x': 7, 'y': 7, 'effect': 'simple', 'multiplier': 'double'}, {'x': 8, 'y': 7, 'effect': 'simple', 'multiplier': 'simple'},
+        {'x': 7, 'y': 7, 'effect': 'start', 'multiplier': 'double'}, {'x': 8, 'y': 7, 'effect': 'simple', 'multiplier': 'simple'},
         {'x': 9, 'y': 7, 'effect': 'simple', 'multiplier': 'simple'}, {'x': 10, 'y': 7, 'effect': 'simple', 'multiplier': 'simple'},
         {'x': 11, 'y': 7, 'effect': 'simple', 'multiplier': 'double'}, {'x': 12, 'y': 7, 'effect': 'simple', 'multiplier': 'simple'},
         {'x': 13, 'y': 7, 'effect': 'simple', 'multiplier': 'simple'}, {'x': 14, 'y': 7, 'effect': 'bis', 'multiplier': 'simple'},

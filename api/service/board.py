@@ -7,6 +7,8 @@ class BoardService(object):
         e = 'simple'
         if effect == 'b':
             e = 'bis'
+        elif effect == 's':
+            e = 'start'
 
         m = 'simple'
         if multiplier == 2:

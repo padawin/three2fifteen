@@ -44,7 +44,7 @@ class Board(object):
             [n,   n,  n, n, n, n, n,  n,  n, n, n, n, n,  n,  n],
             [n,   n,  n, n, n, n, n,  n,  n, n, n, n, n,  n,  n],
             [n,   n,  n, n, n, n, n,  n,  n, n, n, n, n,  n,  n],
-            ['b', n,  n, n, n, n, n,  n,  n, n, n, n, n,  n, 'b'],
+            ['b', n,  n, n, n, n, n,  's',  n, n, n, n, n,  n, 'b'],
             [n,   n,  n, n, n, n, n,  n,  n, n, n, n, n,  n,  n],
             [n,   n,  n, n, n, n, n,  n,  n, n, n, n, n,  n,  n],
             [n,   n,  n, n, n, n, n,  n,  n, n, n, n, n,  n,  n],
@@ -82,6 +82,9 @@ class Board(object):
 
     def is_bis(self, x, y):
         return self.effects[y][x] == 'b'
+
+    def is_start(self, x, y):
+        return self.effects[y][x] == 's'
 
     def set_placement(self, x, y, value):
         self.grid[y][x] = value

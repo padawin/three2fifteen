@@ -77,7 +77,7 @@ INVALID_SCORE_PLAY = "Invalid play score"
 INVALID_NOT_ALIGNED_PLAY = "Play not aligned"
 INVALID_TOO_SPREAD_PLAY = "Play too spread"
 INVALID_NON_ADJACENT_TOKENS = "Not adjacent tokens"
-INVALID_MUST_TURN_MUST_BE_CENTER = "First turn must be played in center"
+INVALID_MUST_TURN_MUST_BE_START = "First turn must be played in start"
 INVALID_PLACEMENT = "A placement is invalid"
 INVALID_ISOLATED_PLAY = "A play must touch the rest of the tokens"
 
@@ -206,22 +206,21 @@ def _analyse_tokens_alignment(board_instance, play):
 
 def _analyse_play_position(board_instance, play):
     if board_instance.is_empty():
-        if not _has_token_in_center(board_instance, play):
-            return INVALID_MUST_TURN_MUST_BE_CENTER
+        if not _has_token_in_start(board_instance, play):
+            return INVALID_MUST_TURN_MUST_BE_START
     elif _is_island(board_instance, play):
         return INVALID_ISOLATED_PLAY
 
     return VALID
 
 
-def _has_token_in_center(board_instance, play):
+def _has_token_in_start(board_instance, play):
     """
-    Test if a token of the play is in the center of the board
+    Test if a token of the play is in the start of the board
     """
     return 0 < len([
         1 for token in play
-        if token['x'] == board_instance.width // 2 and
-        token['y'] == board_instance.height // 2])
+        if board_instance.is_start(token['x'], token['y'])])
 
 
 def _is_island(board_instance, play):
