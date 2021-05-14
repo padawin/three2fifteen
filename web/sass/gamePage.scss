@@ -1,3 +1,32 @@
+body {
+	position: relative;
+	height: 100vh;
+}
+
+#game-section {
+	position: absolute;
+    top: $header-height;
+    bottom: 73px;
+    left: 0;
+    width: 100%;
+	margin: 0;
+}
+
+#game-controls {
+	position: absolute;
+	margin: 0;
+    bottom: 0;
+    left: 0;
+    height: 73px;
+    width: 100%;
+}
+
+@media screen and (max-width: 990px) {
+	#game-controls {
+		height: 126px;
+	}
+}
+
 .token {
   width: $cell-size;
   height: $cell-size;
@@ -16,69 +45,58 @@
 }
 
 #alert-container{
-  margin: .5rem 0;
+  margin: 0;
+  left: 0;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
 }
-#game-section{
-  background: $white;
-  margin: .5rem 0;
-  border: 1px solid #eeeeee;
+
+#board-wrapper{
+  margin: 1rem auto 0px;
 }
-
-
-#game-play-section{
-  #board-wrapper{
-    margin: 1rem auto 0px;
-  }
-  #board {
-    list-style: none;
-    width: 540px;
-    padding: 0px;
-    margin: 0 auto;
-    &::after{
-      content: '';
-      clear: both;
-      display: block;
-    }
-  }
-
-  #player-hand {
+#board {
+  list-style: none;
+  width: 540px;
+  padding: 0px;
+  margin: 0 auto;
+  &::after{
+    content: '';
     clear: both;
-    text-align: center;
-    height: $cell-size;
-    margin: .5rem auto .5rem;
-    width: 100%;
-    // background: $light-yellow;
-    // border: 1px black solid;
-    .token {
-      display: inline-block;
-      position: relative;
-      margin: 0 2px;
-      width: $cell-size;
-      height: $cell-size;
-    }
+    display: block;
   }
-
-  .game-info{
-    height: 2rem;
-    align-items: center;
-    display: flex;
-    justify-content: space-around;
-  }
-  #confirm-button-wrapper{
-    padding: 1rem;
-    margin: 0 -15px;
-    background: #fafafa;
-    border-top: 1px solid #eeeeee;
-    #confirm-play{
-      width: 100%;
-      display: block;
-      margin: 0 auto;
-    }
-  }
-
 }
 
+#player-hand {
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid $border-color;
+  background: $background-color;
+  .token {
+    display: inline-block;
+    position: relative;
+    margin: 0 2px;
+    width: $cell-size;
+    height: $cell-size;
+  }
+}
 
+.game-info{
+  height: 2rem;
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+}
+#confirm-button-wrapper{
+  padding: 1rem;
+  background: $background-color;
+  border-top: 1px solid $border-color;
+  #confirm-play{
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+}
 
 .cell {
   background-color: $light-gray;
@@ -139,14 +157,20 @@
   justify-content: space-between;
   padding-top: .5rem;
   padding-bottom: .5rem;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid $border-color;
+  border-bottom: 1px solid $border-color;
+  .score:first-child {
+	  border-left: 0px;
+  }
   .score{
+	border-left: 1px solid $border-color;
     width: 45%;
     height: 2rem;
     font: $subhead;
     display: flex;
     align-items: center;
     justify-content:space-between;
+	padding: 0 17px;
     .player-info{
       display: flex;
       font-size: $header;
@@ -168,6 +192,8 @@
 
 #player-scores{
   border-left: 1px solid #eeeeee;
+  background: $background-color;
+  position: relative;
 
   h3{
     margin-top: 16px;
@@ -192,7 +218,7 @@
 
     background-color: $light-gray;
     margin: 8px 0;
-    padding: 8px;
+    padding: 8px 16px 8px 8px;
     display: flex;
     align-items:center;
     justify-content: space-between;

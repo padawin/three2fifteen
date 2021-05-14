@@ -145,7 +145,7 @@ loader.executeModule('gamePageModule',
 	const _render = () => {
 		let template = _prepareData();
 
-		B.$id('game-section').innerHTML = B.Template.compile(
+		B.$id('game').innerHTML = B.Template.compile(
 			template,
 			module.data
 		);
