@@ -4,7 +4,7 @@ from api.game.board import Board
 class BoardService(object):
     @staticmethod
     def _make_cell(x, y, value):
-        if value == 0:
+        if value == 1:
             cell_type = 'simple'
         elif value == 2:
             cell_type = 'double'

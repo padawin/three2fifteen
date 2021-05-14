@@ -120,8 +120,8 @@ def test_is_empty_initial_data():
     [
         [4, 4, 2],
         [1, 4, 3],
-        [4, 3, 0],
-        [0, 7, 0]
+        [4, 3, 1],
+        [0, 7, 1]
     ],
     ids=["Double",
          "Triple",
