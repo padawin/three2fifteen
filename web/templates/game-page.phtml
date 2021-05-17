@@ -11,11 +11,9 @@
 				[[each game.players as player on player_score]]
 			</div>
 			<div id="game-play-section" class="col-lg-8">
-				<div id="board-wrapper">
 					<table id="board">
 						[[each board as row on board_row]]
 					</table>
-				</div>
 				<div class="game-info">
 					Tokens remaining: [[game.size_bag]]
 				</div>
