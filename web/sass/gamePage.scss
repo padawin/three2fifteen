@@ -5,10 +5,10 @@ body {
 
 #game-section {
 	position: absolute;
-    top: $header-height;
-    bottom: $footer-height;
-    left: 0;
-    width: 100%;
+	top: $header-height;
+	bottom: $footer-height;
+	left: 0;
+	width: 100%;
 	margin: 0;
 }
 
@@ -19,10 +19,10 @@ body {
 #game-controls {
 	position: absolute;
 	margin: 0;
-    bottom: 0;
-    left: 0;
-    height: $footer-height;
-    width: 100%;
+	bottom: 0;
+	left: 0;
+	height: $footer-height;
+	width: 100%;
 }
 
 @media screen and (max-width: 991px) {
@@ -32,250 +32,250 @@ body {
 }
 
 .token {
-  width: $cell-size;
-  height: $cell-size;
-  color: white;
-  background-color: $secondary-color;
-  border-radius: 2px;
-  line-height: $cell-size;
-  font-size: 21px;
-  text-shadow: 1px 1px 1px rgba(0,0,0,.24);
-  z-index: 1;
-  cursor: grab;
-  cursor: hand;
-  cursor: -webkit-grab;
+	width: $cell-size;
+	height: $cell-size;
+	color: white;
+	background-color: $secondary-color;
+	border-radius: 2px;
+	line-height: $cell-size;
+	font-size: 21px;
+	text-shadow: 1px 1px 1px rgba(0,0,0,.24);
+	z-index: 1;
+	cursor: grab;
+	cursor: hand;
+	cursor: -webkit-grab;
 }
 
 #alert-container{
-  margin: 0;
-  left: 0;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
+	margin: 0;
+	left: 0;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
 }
 
 @media screen and (max-width: 991px) {
-#board {
-  height: min(98vh - 218px, 100vw);
-  width: min(98vh - 218px, 100vw);
-  margin: -4rem auto 0;
-  }
+	#board {
+		height: min(98vh - 218px, 100vw);
+		width: min(98vh - 218px, 100vw);
+		margin: -4rem auto 0;
+	}
 }
 @media screen and (min-width: 992px) {
-#board {
-  height: min(98vh - 123px, 62vw); // 123px == $header-height - $footer-height
-  width: min(98vh - 123px, 62vw); // 123px == $header-height - $footer-height
-  margin: 1rem auto 0;
-  }
+	#board {
+		height: min(98vh - 123px, 62vw); // 123px == $header-height - $footer-height
+		width: min(98vh - 123px, 62vw); // 123px == $header-height - $footer-height
+		margin: 1rem auto 0;
+	}
 }
 #board {
-  list-style: none;
-  padding: 0px;
-  &::after{
-    content: '';
-    clear: both;
-    display: block;
-  }
-  .token {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    line-height: 200%;
-  }
+	list-style: none;
+	padding: 0px;
+	&::after{
+		content: '';
+		clear: both;
+		display: block;
+	}
+	.token {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		line-height: 200%;
+	}
 }
 
 #player-hand {
-  padding: 1rem;
-  text-align: center;
-  border-top: 1px solid $border-color;
-  background: $background-color;
-  .token {
-    display: inline-block;
-    position: relative;
-    margin: 0 2px;
-    width: $token-size;
-    height: $token-size;
-  line-height: $token-size;
-  }
+	padding: 1rem;
+	text-align: center;
+	border-top: 1px solid $border-color;
+	background: $background-color;
+	.token {
+		display: inline-block;
+		position: relative;
+		margin: 0 2px;
+		width: $token-size;
+		height: $token-size;
+		line-height: $token-size;
+	}
 }
 
 .game-info{
-  height: 2rem;
-  align-items: center;
-  display: flex;
-  justify-content: space-around;
+	height: 2rem;
+	align-items: center;
+	display: flex;
+	justify-content: space-around;
 }
 #confirm-button-wrapper{
-  padding: 1rem;
-  background: $background-color;
-  border-top: 1px solid $border-color;
-  #confirm-play{
-    width: 100%;
-    display: block;
-    margin: 0 auto;
-  }
+	padding: 1rem;
+	background: $background-color;
+	border-top: 1px solid $border-color;
+	#confirm-play{
+		width: 100%;
+		display: block;
+		margin: 0 auto;
+	}
 }
 
 .cell {
 	vertical-align: middle;
-  background-color: $light-gray;
-  display: inline-block;
-  border-radius: 2px;
-  margin: 2px;
-  width: $cell-size;
-  height: $cell-size;
-  text-align: center;
-  line-height: $cell-size;
+	background-color: $light-gray;
+	display: inline-block;
+	border-radius: 2px;
+	margin: 2px;
+	width: $cell-size;
+	height: $cell-size;
+	text-align: center;
+	line-height: $cell-size;
 	position: relative;
 }
 
 
 .cell.hovered{
-  background-color: $primary-color!important;
+	background-color: $primary-color!important;
 }
 
 .cell::after {
-  width: $cell-size;
-  height: $cell-size;
-  position: absolute;
-  left: 37%;
-  top: 50%;
+	width: $cell-size;
+	height: $cell-size;
+	position: absolute;
+	left: 37%;
+	top: 50%;
 }
 
 .cell-bis {
-  background-color: $light-purple;
+	background-color: $light-purple;
 }
 
 .cell.cell-triple {
-  background-color: $light-blue;
+	background-color: $light-blue;
 }
 
 .cell.cell-triple::after {
-  content: 'x3';
+	content: 'x3';
 }
 
 .cell.cell-double {
-  background-color: $light-red;
+	background-color: $light-red;
 }
 
 .cell.cell-double::after {
-  content: 'x2'
+	content: 'x2'
 }
 
 .cell.cell-bis::after {
-  font-family: 'Material Icons';
-  content: '\e042' !important;
+	font-family: 'Material Icons';
+	content: '\e042' !important;
 }
 
 .cell.cell-start::after {
-  font-family: 'Material Icons';
-  content: '\e838' !important;
+	font-family: 'Material Icons';
+	content: '\e838' !important;
 }
 
 
 #player-scores-mobile{
 	height: 42px;
-  justify-content: space-between;
-  padding-top: .5rem;
-  padding-bottom: .5rem;
-  border-bottom: 1px solid $border-color;
-  border-bottom: 1px solid $border-color;
-  .score:first-child {
-	  border-left: 0px;
-  }
-  .score{
-	border-left: 1px solid $border-color;
-    width: 45%;
-    height: 2rem;
-    font: $subhead;
-    display: flex;
-    align-items: center;
-    justify-content:space-between;
-	padding: 0 17px;
-    .player-info{
-      display: flex;
-      font-size: $header;
-      .player-turn{
-        color: $yellow;
-      }
-      .player-avatar{
-        display: none;
-        display: inline-block;
-      }
-    }
-    .player-score{
-      font-weight: 600;
-    }
+	justify-content: space-between;
+	padding-top: .5rem;
+	padding-bottom: .5rem;
+	border-bottom: 1px solid $border-color;
+	border-bottom: 1px solid $border-color;
+	.score:first-child {
+		border-left: 0px;
+	}
+	.score{
+		border-left: 1px solid $border-color;
+		width: 45%;
+		height: 2rem;
+		font: $subhead;
+		display: flex;
+		align-items: center;
+		justify-content:space-between;
+		padding: 0 17px;
+		.player-info{
+			display: flex;
+			font-size: $header;
+			.player-turn{
+				color: $yellow;
+			}
+			.player-avatar{
+				display: none;
+				display: inline-block;
+			}
+		}
+		.player-score{
+			font-weight: 600;
+		}
 
 
-  }
+	}
 }
 
 #player-scores{
-  border-left: 1px solid #eeeeee;
-  background: $background-color;
-  position: relative;
+	border-left: 1px solid #eeeeee;
+	background: $background-color;
+	position: relative;
 
-  h3{
-    margin-top: 16px;
-    margin-bottom: 16px;
-  }
-  .score{
-    &#score-player-1{
-      border-left: 4px solid $primary-color;
-    }
+	h3{
+		margin-top: 16px;
+		margin-bottom: 16px;
+	}
+	.score{
+		&#score-player-1{
+			border-left: 4px solid $primary-color;
+		}
 
-    &#score-player-2{
-      border-left: 4px solid $secondary-color;
-    }
+		&#score-player-2{
+			border-left: 4px solid $secondary-color;
+		}
 
-    &#score-player-3{
-      border-left: 4px solid $yellow;
-    }
+		&#score-player-3{
+			border-left: 4px solid $yellow;
+		}
 
-    &#score-player-4{
-      border-left: 4px solid $purple;
-    }
+		&#score-player-4{
+			border-left: 4px solid $purple;
+		}
 
-    background-color: $light-gray;
-    margin: 8px 0;
-    padding: 8px 16px 8px 8px;
-    display: flex;
-    align-items:center;
-    justify-content: space-between;
+		background-color: $light-gray;
+		margin: 8px 0;
+		padding: 8px 16px 8px 8px;
+		display: flex;
+		align-items:center;
+		justify-content: space-between;
 
-    .player-info{
-      display: flex;
-      align-items:center;
-      .player-turn{
-        color: $blue;
-      }
-    }
+		.player-info{
+			display: flex;
+			align-items:center;
+			.player-turn{
+				color: $blue;
+			}
+		}
 
-    .player-avatar{
-      width: 64px;
-      height: 64px;
-      margin: 0 8px;
-      background-size: contain;
-    }
+		.player-avatar{
+			width: 64px;
+			height: 64px;
+			margin: 0 8px;
+			background-size: contain;
+		}
 
-    .player-score{
-      font-weight: 600;
-    }
+		.player-score{
+			font-weight: 600;
+		}
 
-    #player-1-image{
-      background-image: url('../images/Avatar 1.png');
-    }
-    #player-2-image{
-      background-image: url('../images/Avatar 2.png');
-    }
-    #player-3-image{
-      background-image: url('../images/Avatar 3.png');
-    }
-    #player-4-image{
-      background-image: url('../images/Avatar 4.png');
-    }
-  }
+		#player-1-image{
+			background-image: url('../images/Avatar 1.png');
+		}
+		#player-2-image{
+			background-image: url('../images/Avatar 2.png');
+		}
+		#player-3-image{
+			background-image: url('../images/Avatar 3.png');
+		}
+		#player-4-image{
+			background-image: url('../images/Avatar 4.png');
+		}
+	}
 }
 
 
