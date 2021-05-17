@@ -6,7 +6,7 @@ body {
 #game-section {
 	position: absolute;
     top: $header-height;
-    bottom: 73px;
+    bottom: $footer-height;
     left: 0;
     width: 100%;
 	margin: 0;
@@ -17,7 +17,7 @@ body {
 	margin: 0;
     bottom: 0;
     left: 0;
-    height: 73px;
+    height: $footer-height;
     width: 100%;
 }
 
