@@ -3,8 +3,8 @@ loader.executeModule('gamePageModule',
 (config, app, B, utils, Game, Socket, request, auth) => {
 	const gameId = B.$id('game_id').dataset.value;
 
-	const getTDNode = (node) => {
-		while (node && node.nodeName != 'TD') {
+	const getLiNode = (node) => {
+		while (node && node.nodeName != 'LI') {
 			node = node.parentNode;
 		}
 		return node;
@@ -76,7 +76,7 @@ loader.executeModule('gamePageModule',
 
 	const _dropToken = (e, callback) => {
 		e.preventDefault();
-		const li = getTDNode(e.target);
+		const li = getLiNode(e.target);
 		const token = B.$id(e.dataTransfer.getData('token-id'));
 		// Prevent from dropping more than one token in the same space
 		if (li.children.length) {
@@ -145,7 +145,7 @@ loader.executeModule('gamePageModule',
 	const _render = () => {
 		let template = _prepareData();
 
-		B.$id('game-section').innerHTML = B.Template.compile(
+		B.$id('game').innerHTML = B.Template.compile(
 			template,
 			module.data
 		);
@@ -172,7 +172,7 @@ loader.executeModule('gamePageModule',
 			});
 			B.$id('player-hand').addEventListener('dragover', _tokenOverHand);
 			B.$id('player-hand').addEventListener('drop', _dropTokenHand);
-			document.querySelectorAll('#board td').forEach((place) => {
+			document.querySelectorAll('#board li').forEach((place) => {
 				place.addEventListener('dragover', _tokenOverBoard, false);
 				place.addEventListener('drop', _dropTokenBoard, false);
 			});
@@ -229,7 +229,6 @@ loader.executeModule('gamePageModule',
 				player_token: {html: B.$id('player-token').innerHTML},
 				board_token: {html: B.$id('board-token').innerHTML},
 				board_cell: {html: B.$id('board-cell').innerHTML},
-				board_row: {html: B.$id('board-row').innerHTML},
 				player_score: {html: B.$id('template-player-score').innerHTML},
 				game_creator: {html: B.$id('template-game-creator').innerHTML},
 				player_turn: {html: B.$id('template-player-turn').innerHTML},

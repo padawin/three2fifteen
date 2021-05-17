@@ -12,9 +12,10 @@ $light-blue: #A5DCFD;
 $light-purple: #F0CBF6;
 $white: #FFFFFF;
 $gray: #5C5C5D;
-$light-gray: #F4F3F5;
+$light-gray: #F2F1F3;
 
-$background-color: #fafafa;
+$background-color: #f8f8f8;
+$border-color: #eeeeee;
 
 
 // Font Style
@@ -29,4 +30,7 @@ $header: 1.429rem/2rem $fontFamily;
 $headline: 1.714rem/2.286rem $fontFamily;
 $display1: 2.286rem/4rem $fontFamily;
 
-$cell-size: 32px;
+$header-height: 50px;
+$footer-height: 73px;
+$token-size: 4.4vh;
+$cell-size: calc(6.6666666% - 4px);

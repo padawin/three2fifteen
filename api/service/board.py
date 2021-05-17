@@ -19,8 +19,6 @@ class BoardService(object):
 
     def get(self):
         board = Board()
-        return [
-            [
-                BoardService._make_cell(x, y, multiplier, effect) for x, (multiplier, effect) in enumerate(zip(multipliers, effects))
-            ] for y, (multipliers, effects) in enumerate(zip(board.multipliers, board.effects))
-        ]
+        return [BoardService._make_cell(x, y, multiplier, effect)
+                for y, (multipliers, effects) in enumerate(zip(board.multipliers, board.effects))
+                for x, (multiplier, effect) in enumerate(zip(multipliers, effects))]

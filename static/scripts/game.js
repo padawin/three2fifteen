@@ -46,7 +46,8 @@ loader.addModule('Game',
 		},
 		setBoardContent: (board, content) => {
 			for (let token of content) {
-				board[token.y][token.x].token = token;
+				const index = token.y * BOARD_WIDTH + token.x;
+				board[index].token = token;
 			}
 		},
 		placeToken: (gameId, tokenId, x, y, value) => {

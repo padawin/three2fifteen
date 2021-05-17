@@ -2,36 +2,35 @@
 {% block body %}
 	{% include "header.phtml" %}
 
-	<div class="container">
-		<div id="alert-container" class="hidden alert" role="alert"></div>
-		<div id="game-section" class="row justify-content-center">
-
-		</div>
+	<div id="game">
 	</div>
 
 	<script type="template" id="game-ongoing">
-		<div id="player-scores-mobile" class="col-lg-4 d-lg-none d-flex flex-row">
-			[[each game.players as player on player_score]]
+		<div id="game-section" class="row justify-content-center">
+			<div id="player-scores-mobile" class="col-lg-4 d-lg-none d-flex flex-row">
+				[[each game.players as player on player_score]]
+			</div>
+			<div id="game-play-section" class="col-lg-8">
+				<ul id="board">
+					[[each board as cell on board_cell]]
+				</ul>
+			</div>
+			<div id="player-scores" class="col-lg-4 d-none d-lg-block">
+				<h3>Scores:</h3>
+				[[each game.players as player on player_score]]
+				<div id="alert-container" class="alert" role="alert"></div>
+				<div class="game-info">
+					Tokens remaining: [[game.size_bag]]
+				</div>
+			</div>
 		</div>
-		<div id="game-play-section" class="col-lg-8">
-			<div id="board-wrapper">
-				<table id="board">
-					[[each board as row on board_row]]
-				</table>
+		<div id="game-controls" class="row">
+			<div id="player-hand" class="col-lg-8">
+					[[each player_hand as token on player_token]]
 			</div>
-			<div class="game-info">
-				Tokens remaining: [[game.size_bag]]
-			</div>
-			<div id="player-hand">
-				[[each player_hand as token on player_token]]
-			</div>
-			<div id="confirm-button-wrapper">
+			<div id="confirm-button-wrapper" class="col-lg-4">
 				<button id="confirm-play" class="btn btn-primary btn-full-width" disabled>Confirm</button>
 			</div>
-		</div>
-		<div id="player-scores" class="col-lg-4 d-none d-lg-block">
-			<h3>Scores:</h3>
-			[[each game.players as player on player_score]]
 		</div>
 	</script>
 
@@ -47,17 +46,7 @@
 		</div>
 	</script>
 
-	<script type="template" id="board-cell">
-		<td class="cell cell-[[cell.multiplier]] cell-[[cell.effect]]" data-x="[[cell.x]]" data-y="[[cell.y]]">
-			[[if cell.token then board_token with cell]]
-		</td>
-	</script>
-
-	<script type="template" id="board-row">
-		<tr>
-			[[each row as cell on board_cell]]
-		</tr>
-	</script>
+	<script type="template" id="board-cell"><li class="cell cell-[[cell.multiplier]] cell-[[cell.effect]]" data-x="[[cell.x]]" data-y="[[cell.y]]">[[if cell.token then board_token with cell]]</li></script>
 
 	<script type="template" id="game-open">
 		<div id="game-play-section" class="col-lg-8">

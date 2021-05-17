@@ -11,7 +11,6 @@ html{
 }
 
 body {
-  background: $background-color;
 	font: $body;
 }
 
@@ -53,10 +52,6 @@ h5{
 	border-color: $blue;
 }
 
-.bg-primary{
-	background-color:$primary-color!important;
-}
-
 .btn-primary.disabled, .btn-primary:disabled{
 	background-color: #cccccc;
 	border-color: #cccccc;
@@ -72,7 +67,7 @@ h5{
 	border-color: rgba(255,255,255,0.2);
 }
 .btn{
-	height: 36px;
+	height: 43px;
 }
 
 .btn:hover{
@@ -83,6 +78,7 @@ h5{
 	display: none!important;
 }
 
+@import "header";
 @import "gamePage";
 @import "createGame";
 @import "gameFinishPage";
