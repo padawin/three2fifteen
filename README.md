@@ -21,6 +21,10 @@ To use the app in development mode, use:
 
 	DEV=1 python app.py
 
+Then, the game is accessible at:
+
+	http://localhost:5000
+
 ## Tests
 
 Install ``requirements_dev.txt``, then run:
