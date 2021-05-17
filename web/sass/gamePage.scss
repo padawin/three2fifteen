@@ -56,9 +56,9 @@ body {
 
 @media screen and (max-width: 991px) {
 	#board {
-		height: min(98vh - 236px, 100vw);
-		width: min(98vh - 236px, 100vw);
-		margin: -4rem auto 0;
+		height: min(98vh - 258px, 100vw);
+		width: min(98vh - 258px, 100vw);
+		margin: -5rem auto 0;
 	}
 }
 @media screen and (min-width: 992px) {
@@ -173,6 +173,9 @@ body {
 }
 
 
+.players-wrapper-mobile{
+	width: 100%;
+}
 #player-scores-mobile{
 	height: 42px;
 	justify-content: space-between;

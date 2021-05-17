@@ -7,8 +7,13 @@
 
 	<script type="template" id="game-ongoing">
 		<div id="game-section" class="row justify-content-center">
-			<div id="player-scores-mobile" class="col-lg-4 d-lg-none d-flex flex-row">
-				[[each game.players as player on player_score]]
+			<div class="players-wrapper-mobile d-lg-none">
+				<div id="player-scores-mobile" class="col-lg-4 d-flex flex-row">
+					[[each game.players as player on player_score]]
+				</div>
+				<div class="game-info">
+					Tokens remaining: [[game.size_bag]]
+				</div>
 			</div>
 			<div id="game-play-section" class="col-lg-8">
 				<ul id="board">
