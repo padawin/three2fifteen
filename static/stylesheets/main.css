@@ -33,7 +33,7 @@ h5 {
   width: 100%; }
 
 .card {
-  background-color: #F4F3F5; }
+  background-color: #F2F1F3; }
 
 .btn-primary {
   background-color: #3B7BD6;
@@ -130,7 +130,7 @@ body {
   padding: 1rem;
   text-align: center;
   border-top: 1px solid #eeeeee;
-  background: #fafafa; }
+  background: #f8f8f8; }
   #player-hand .token {
     display: inline-block;
     position: relative;
@@ -146,7 +146,7 @@ body {
 
 #confirm-button-wrapper {
   padding: 1rem;
-  background: #fafafa;
+  background: #f8f8f8;
   border-top: 1px solid #eeeeee; }
   #confirm-button-wrapper #confirm-play {
     width: 100%;
@@ -154,7 +154,7 @@ body {
     margin: 0 auto; }
 
 .cell {
-  background-color: #F4F3F5;
+  background-color: #F2F1F3;
   float: left;
   border-radius: 2px;
   margin: 2px;
@@ -227,13 +227,13 @@ body {
 
 #player-scores {
   border-left: 1px solid #eeeeee;
-  background: #fafafa;
+  background: #f8f8f8;
   position: relative; }
   #player-scores h3 {
     margin-top: 16px;
     margin-bottom: 16px; }
   #player-scores .score {
-    background-color: #F4F3F5;
+    background-color: #F2F1F3;
     margin: 8px 0;
     padding: 8px 16px 8px 8px;
     display: flex;
