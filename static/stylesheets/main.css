@@ -89,7 +89,7 @@ body {
 
 @media screen and (max-width: 991px) {
   #game-controls {
-    height: 126px; } }
+    height: 144px; } }
 .token {
   width: calc(6.6666666% - 4px);
   height: calc(6.6666666% - 4px);
@@ -113,8 +113,8 @@ body {
 
 @media screen and (max-width: 991px) {
   #board {
-    height: min(98vh - 218px, 100vw);
-    width: min(98vh - 218px, 100vw);
+    height: min(98vh - 236px, 100vw);
+    width: min(98vh - 236px, 100vw);
     margin: -4rem auto 0; } }
 @media screen and (min-width: 992px) {
   #board {
