@@ -14,22 +14,20 @@ loader.executeModule('gameJoinModule',
 					}),
 					{},
 					(statusCode, body) => {
-						if (statusCode != 200) {
-							B.$id("form-message").innerHTML = body.message;
-							return;
-						}
-						auth.setToken(body.access_token);
-						const game_id = B.$id('game_id').dataset.value;
-						let url = config.api_host + config.api_join_game;
-						url = utils.format(url, [game_id]);
-						request.put(
-							url,
-							"",
-							auth.getHeader(),
-							(statusCode, body) => {
-								utils.apiResponseHandler(statusCode, body, '/game/' + game_id);
-							}
-						);
+						utils.apiResponseHandler(statusCode, body, null, function(body) {
+							auth.setToken(body.access_token);
+							const game_id = B.$id('game_id').dataset.value;
+							let url = config.api_host + config.api_join_game;
+							url = utils.format(url, [game_id]);
+							request.put(
+								url,
+								"",
+								auth.getHeader(),
+								(statusCode, body) => {
+									utils.apiResponseHandler(statusCode, body, '/game/' + game_id);
+								}
+							);
+						});
 					}
 				);
 			});
