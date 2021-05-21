@@ -3,12 +3,12 @@ loader.addModule('utils', 'B', (B) => {
 		apiResponseHandler: (statusCode, body, toUrl, callback) => {
 			if (statusCode == 200) {
 				if (callback) {
-					callback(JSON.parse(body));
+					callback(body);
 				}
 				utils.goToUrl(toUrl);
 			}
 			else {
-				B.$id("form-message").innerHTML = JSON.parse(body).message;
+				B.$id("form-message").innerHTML = body.message;
 			}
 		},
 		goToUrl: (to) => {
