@@ -3,6 +3,7 @@ loader.addModule('Game',
 (request, config, auth, utils) => {
 	let _currentPlay = {};
 	let _board = null;
+	let _boardInitialContentSet = false;
 	const BOARD_WIDTH = 15;
 
 	const _play = (gameId, dryRun) => {
@@ -47,12 +48,25 @@ loader.addModule('Game',
 		},
 		setBoard: (board) => {
 			_board = board;
+			_boardInitialContentSet = false;
 		},
 		setBoardContent: (content) => {
 			for (let token of content) {
 				const index = token.y * BOARD_WIDTH + token.x;
-				_board[index].token = token;
+				if (_board[index].token && _board[index].token.isNewToken) {
+					_board[index].token.isNewToken = false;
+					_board[index].token.state = "";
+				}
+				else if (!_board[index].token) {
+					_board[index].token = token;
+					_board[index].token.state = "";
+					if (_boardInitialContentSet) {
+						_board[index].token.isNewToken = true;
+						_board[index].token.state = "new";
+					}
+				}
 			}
+			_boardInitialContentSet = true;
 		},
 		placeToken: (gameId, tokenId, x, y, value) => {
 			_currentPlay[tokenId] = {'value': value, 'x': x, 'y': y};

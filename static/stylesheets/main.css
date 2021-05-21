@@ -133,6 +133,8 @@ body {
     width: 100%;
     height: 100%;
     line-height: 200%; }
+    #board .token.new {
+      background-color: #00c5b3; }
 
 #player-hand {
   padding: 1rem;
