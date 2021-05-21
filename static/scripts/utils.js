@@ -5,7 +5,9 @@ loader.addModule('utils', 'B', (B) => {
 				if (callback) {
 					callback(body);
 				}
-				utils.goToUrl(toUrl);
+				else if (toUrl) {
+					utils.goToUrl(toUrl);
+				}
 			}
 			else {
 				B.$id("form-message").innerHTML = body.message;
