@@ -2,6 +2,7 @@ loader.addModule('Game',
 'request', 'config', 'auth', 'utils',
 (request, config, auth, utils) => {
 	let _currentPlay = {};
+	let _board = null;
 	const BOARD_WIDTH = 15;
 
 	const _play = (gameId, dryRun) => {
@@ -44,10 +45,13 @@ loader.addModule('Game',
 				game.current_is_winner = winner.is_current;
 			}
 		},
-		setBoardContent: (board, content) => {
+		setBoard: (board) => {
+			_board = board;
+		},
+		setBoardContent: (content) => {
 			for (let token of content) {
 				const index = token.y * BOARD_WIDTH + token.x;
-				board[index].token = token;
+				_board[index].token = token;
 			}
 		},
 		placeToken: (gameId, tokenId, x, y, value) => {
