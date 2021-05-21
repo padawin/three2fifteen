@@ -128,10 +128,7 @@ loader.executeModule('gamePageModule',
 		else if (module.data.game.ongoing) {
 			template = 'game_ongoing';
 			module.data.game.size_bag = module.data.game_content.size_bag;
-			Game.setBoardContent(
-				module.data.board,
-				module.data.game_content.tokens
-			);
+			Game.setBoardContent(module.data.game_content.tokens);
 			module.data.player_hand.forEach((token, index) => {
 				module.data.player_hand[index] = {'value': token, 'index': index};
 			});
@@ -222,6 +219,7 @@ loader.executeModule('gamePageModule',
 			{'url': utils.format(config.api_get_hand, [gameId]), 'name': 'player_hand'}
 		],
 		'action': () => {
+			Game.setBoard(module.data.board);
 			B.Template.init({
 				game_ongoing: {html: B.$id('game-ongoing').innerHTML},
 				game_open: {html: B.$id('game-open').innerHTML},
