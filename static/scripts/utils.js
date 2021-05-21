@@ -10,6 +10,7 @@ loader.addModule('utils', 'B', (B) => {
 				}
 			}
 			else {
+				B.removeClass("form-message", "hidden");
 				B.$id("form-message").innerHTML = body.message;
 			}
 		},
