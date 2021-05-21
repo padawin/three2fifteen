@@ -14,21 +14,19 @@ loader.executeModule('homeModule',
 					}),
 					{},
 					(statusCode, body) => {
-						if (statusCode != 200) {
-							B.$id("form-message").innerHTML = body.message;
-							return;
-						}
-						auth.setToken(body.access_token);
-						request.post(
-							config.api_host + config.api_create_game,
-							JSON.stringify({
-								'number_players': form.nbPlayers.value
-							}),
-							auth.getHeader(),
-							(statusCode, body) => {
-								utils.apiResponseHandler(statusCode, body, '/game/' + body.game_id);
-							}
-						);
+						utils.apiResponseHandler(statusCode, body, null, function(body) {
+							auth.setToken(body.access_token);
+							request.post(
+								config.api_host + config.api_create_game,
+								JSON.stringify({
+									'number_players': form.nbPlayers.value
+								}),
+								auth.getHeader(),
+								(statusCode, body) => {
+									utils.apiResponseHandler(statusCode, body, '/game/' + body.game_id);
+								}
+							);
+						});
 					}
 				);
 			});

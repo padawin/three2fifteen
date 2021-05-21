@@ -8,7 +8,7 @@
 				<div class="card">
 					<div class="card-body">
 						<form id="game-creation-form" method="POST" action="">
-							<div id="form-message"></div>
+							<div id="form-message" class="hidden alert alert-danger"></div>
 							<div class="form-group">
 								<label for="player_name">Your nickname</label>
 								<input name="player_name" id="player_name" placeholder="Nickname" />
@@ -17,6 +17,7 @@
 								<label for="nbPlayers">Number of players</label>
 								<div class="input-group mb-3">
 								<select class="custom-select" name="nbPlayers" id="nbPlayers" placeholder="Number of players">
+									<option value="">Choose a value</option>
 									<option value="2">Two</option>
 									<option value="3">Three</option>
 										<option value="4">Four</option>
