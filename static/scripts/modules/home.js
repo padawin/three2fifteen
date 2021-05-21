@@ -16,6 +16,7 @@ loader.executeModule('homeModule',
 					(statusCode, body) => {
 						utils.apiResponseHandler(statusCode, body, null, function(body) {
 							auth.setToken(body.access_token);
+							auth.setGameID(game_id);
 							request.post(
 								config.api_host + config.api_create_game,
 								JSON.stringify({
